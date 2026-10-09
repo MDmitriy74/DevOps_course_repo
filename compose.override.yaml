@@ -1,0 +1,16 @@
+services:
+  app:
+    volumes:
+      - .:/app
+    develop:
+      watch:
+        - action: sync
+          path: .
+          target: /app
+          ignore:
+            - venv/
+            - __pycache__/
+            - .git/
+            - .env
+    environment:
+      - FLASK_DEBUG=1

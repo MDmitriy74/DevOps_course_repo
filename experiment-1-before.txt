@@ -1,3 +1,0 @@
-NAME                             UID                                    RESTARTS
-feedback-quiz-58fdb5b98f-gj4j6   2d01eae0-3764-49cd-a491-e5c626aad37c   0
-feedback-quiz-58fdb5b98f-tn8rj   79d78d45-05e5-49af-9871-815315a65219   0

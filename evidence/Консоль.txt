@@ -1,284 +1,85 @@
-ode                 LastWriteTime         Length Name
-----                 -------------         ------ ----
-d-----        23.10.2026     12:22                GFeed.WebApiApp
-
-
-PS D:\Dima\3University\DevOps\feedback-quiz-5th-floor\_Src> cd GFeed.WebApiApp
-PS D:\Dima\3University\DevOps\feedback-quiz-5th-floor\_Src\GFeed.WebApiApp> docker build -t localhost:5001/dima-feedback-quiz:v2 .
-[+] Building 8.6s (16/16) FINISHED                                                                 docker:desktop-linux
- => [internal] load build definition from Dockerfile                                                               0.0s
- => => transferring dockerfile: 606B                                                                               0.0s
- => [internal] load metadata for mcr.microsoft.com/dotnet/sdk:10.0                                                 1.8s
- => [internal] load metadata for mcr.microsoft.com/dotnet/aspnet:10.0                                              0.6s
- => [internal] load .dockerignore                                                                                  0.0s
- => => transferring context: 380B                                                                                  0.0s
- => [publish 1/6] FROM mcr.microsoft.com/dotnet/sdk:10.0@sha256:747cbade5bfd918a175ac32f8f1d931edec2c7d0d5397a3de  0.0s
- => [base 1/2] FROM mcr.microsoft.com/dotnet/aspnet:10.0@sha256:8af87eba5e7cdafb1514d7388be287365da97c132509e84df  0.0s
- => [internal] load build context                                                                                  0.0s
- => => transferring context: 1.78kB                                                                                0.0s
- => CACHED [publish 2/6] WORKDIR /src                                                                              0.0s
- => CACHED [publish 3/6] COPY [GFeed.WebApiApp.csproj, ./]                                                         0.0s
- => CACHED [publish 4/6] RUN dotnet restore "GFeed.WebApiApp.csproj"                                               0.0s
- => [publish 5/6] COPY . .                                                                                         0.0s
- => [publish 6/6] RUN dotnet publish "GFeed.WebApiApp.csproj" -c Release -o /app/publish /p:UseAppHost=false       7.0s
- => CACHED [base 2/2] WORKDIR /app                                                                                 0.0s
- => CACHED [final 1/2] WORKDIR /app                                                                                0.0s
- => [final 2/2] COPY --from=publish /app/publish .                                                                 0.1s
- => exporting to image                                                                                             0.1s
- => => exporting layers                                                                                            0.0s
- => => writing image sha256:383441712d6c290497850d3e5d432db9f150d3b34c7076425e03d351612064c5                       0.0s
- => => naming to localhost:5001/dima-feedback-quiz:v2                                                              0.0s
-
-View build details: docker-desktop://dashboard/build/desktop-linux/desktop-linux/t8y2clx4dwknz3cexwv5wpq3b
-PS D:\Dima\3University\DevOps\feedback-quiz-5th-floor\_Src\GFeed.WebApiApp> docker push localhost:5001/dima-feedback-quiz:v2
-The push refers to repository [localhost:5001/dima-feedback-quiz]
-7273fb508985: Pushed
-5f70bf18a086: Layer already exists
-0c2d5cccb105: Layer already exists
-3157d37ea86d: Layer already exists
-294dde4bf079: Layer already exists
-b1639774715d: Layer already exists
-d62880fe3658: Layer already exists
-15df72d67e31: Layer already exists
-32ab39660fd5: Layer already exists
-v2: digest: sha256:55dfcb54f3bcf07b0fdc9f966d6736a07f6d2b431a2c2d13a4f6d80959423339 size: 2203
-PS D:\Dima\3University\DevOps\feedback-quiz-5th-floor\_Src\GFeed.WebApiApp> kubectl apply -f k8s/namespace.yaml
-error: the path "k8s/namespace.yaml" does not exist
-PS D:\Dima\3University\DevOps\feedback-quiz-5th-floor\_Src\GFeed.WebApiApp> cd ..
-PS D:\Dima\3University\DevOps\feedback-quiz-5th-floor\_Src> cd ..
-PS D:\Dima\3University\DevOps\feedback-quiz-5th-floor> kubectl apply -f k8s/namespace.yaml
-error: error validating "k8s/namespace.yaml": error validating data: failed to download openapi: Get "https://127.0.0.1:6443/openapi/v2?timeout=32s": EOF; if you choose to ignore these errors, turn validation off with --validate=false
-PS D:\Dima\3University\DevOps\feedback-quiz-5th-floor>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-The connection to the server 127.0.0.1:44901 was refused - did you specify the right host or port?
-dima@DESKTOP-A65H6VF:/mnt/d/Dima/3University/DevOps/feedback-quiz-5th-floor$ ^C
-dima@DESKTOP-A65H6VF:/mnt/d/Dima/3University/DevOps/feedback-quiz-5th-floor$ kind export kubeconfig --name hosting-lab
-ERROR: failed to get cluster internal kubeconfig: command "docker exec --privileged hosting-lab-control-plane cat /etc/kubernetes/admin.conf" failed with error: exit status 1
-Command Output: Error response from daemon: container f7089b0f22ac96ecb175d10b822f9b538d62ab7db583f7a8b5b7e90e27285ea9 is not running
-dima@DESKTOP-A65H6VF:/mnt/d/Dima/3University/DevOps/feedback-quiz-5th-floor$ kubectl get nodes -o wide
-NAME                        STATUS   ROLES           AGE   VERSION   INTERNAL-IP   EXTERNAL-IP   OS-IMAGE                         KERNEL-VERSION                       CONTAINER-RUNTIME
-hosting-lab-control-plane   Ready    control-plane   39s   v1.32.2   172.21.0.3    <none>        Debian GNU/Linux 12 (bookworm)   5.15.167.4-microsoft-standard-WSL2   containerd://2.0.2
-dima@DESKTOP-A65H6VF:/mnt/d/Dima/3University/DevOps/feedback-quiz-5th-floor$ kubectl cluster-info
-Kubernetes control plane is running at https://127.0.0.1:39535
-CoreDNS is running at https://127.0.0.1:39535/api/v1/namespaces/kube-system/services/kube-dns:dns/proxy
-
-To further debug and diagnose cluster problems, use 'kubectl cluster-info dump'.
-dima@DESKTOP-A65H6VF:/mnt/d/Dima/3University/DevOps/feedback-quiz-5th-floor$ curl http://localhost:5001/v2/_catalog
-{"repositories":["dima-feedback-quiz","hosting-web","probes-web"]}
-dima@DESKTOP-A65H6VF:/mnt/d/Dima/3University/DevOps/feedback-quiz-5th-floor$ kind export kubeconfig --name hosting-lab
-Set kubectl context to "kind-hosting-lab"
-dima@DESKTOP-A65H6VF:/mnt/d/Dima/3University/DevOps/feedback-quiz-5th-floor$ kubectl get nodes
-NAME                        STATUS   ROLES           AGE     VERSION
-hosting-lab-control-plane   Ready    control-plane   7m36s   v1.32.2
-dima@DESKTOP-A65H6VF:/mnt/d/Dima/3University/DevOps/feedback-quiz-5th-floor$ kubectl apply -f k8s/namespace.yaml
-namespace/homework-1 created
-dima@DESKTOP-A65H6VF:/mnt/d/Dima/3University/DevOps/feedback-quiz-5th-floor$ kubectl apply -f k8s/configmap.yaml
-configmap/feedback-quiz-config created
-dima@DESKTOP-A65H6VF:/mnt/d/Dima/3University/DevOps/feedback-quiz-5th-floor$ kubectl apply -f k8s/secret.yaml
-secret/feedback-quiz-secret created
-dima@DESKTOP-A65H6VF:/mnt/d/Dima/3University/DevOps/feedback-quiz-5th-floor$ kubectl apply -f k8s/deployment.yaml
-deployment.apps/feedback-quiz created
-dima@DESKTOP-A65H6VF:/mnt/d/Dima/3University/DevOps/feedback-quiz-5th-floor$ kubectl -n homework-1 get pods -o wide
-NAME                             READY   STATUS             RESTARTS   AGE   IP           NODE                        NOMINATED NODE   READINESS GATES
-feedback-quiz-58fdb5b98f-8rzzj   0/1     ImagePullBackOff   0          21s   10.244.0.6   hosting-lab-control-plane   <none>           <none>
-feedback-quiz-58fdb5b98f-m7qhd   0/1     ImagePullBackOff   0          21s   10.244.0.5   hosting-lab-control-plane   <none>           <none>
-dima@DESKTOP-A65H6VF:/mnt/d/Dima/3University/DevOps/feedback-quiz-5th-floor$ kubectl -n homework-1 rollout status deployment/feedback-quiz
-Waiting for deployment "feedback-quiz" rollout to finish: 0 of 2 updated replicas are available...
-dima@DESKTOP-A65H6VF:/mnt/d/Dima/3University/DevOps/feedback-quiz-5th-floor$ $ kubectl -n homework-get pods -o wide
-NAME                             READY   STATUS             RESTARTS   AGE    IP           NODE                        NOMINATED NODE   READINESS GATES
-feedback-quiz-58fdb5b98f-8rzzj   0/1     ImagePullBackOff   0          4m1s   10.244.0.6   hosting-lab-control-plane   <none>           <none>
-feedback-quiz-58fdb5b98f-m7qhd   0/1     ImagePullBackOff   0          4m1s   10.244.0.5   hosting-lab-control-plane   <none>           <none>
-dima@DESKTOP-A65H6VF:/mnt/d/Dima/3University/DevOps/feedback-quiz-5th-floor$ kind load docker-image localhost:5001/dima-feedback-quiz:v2 --name hosting-lab
-Image: "localhost:5001/dima-feedback-quiz:v2" with ID "sha256:383441712d6c290497850d3e5d432db9f150d3b34c7076425e03d351612064c5" not yet present on node "hosting-lab-control-plane", loading...
-dima@DESKTOP-A65H6VF:/mnt/d/Dima/3University/DevOps/feedback-quiz-5th-floor$ kubectl -n homework-1 delete pods -l app=feedback-quiz
-pod "feedback-quiz-58fdb5b98f-8rzzj" deleted from homework-1 namespace
-pod "feedback-quiz-58fdb5b98f-m7qhd" deleted from homework-1 namespace
-dima@DESKTOP-A65H6VF:/mnt/d/Dima/3University/DevOps/feedback-quiz-5th-floor$ kubectl -n homework-1 rollout status deployment/feedback-quiz
-deployment "feedback-quiz" successfully rolled out
-dima@DESKTOP-A65H6VF:/mnt/d/Dima/3University/DevOps/feedback-quiz-5th-floor$ kubectl -n homework-1 get deployment
-NAME            READY   UP-TO-DATE   AVAILABLE   AGE
-feedback-quiz   2/2     2            2           9m49s
-dima@DESKTOP-A65H6VF:/mnt/d/Dima/3University/DevOps/feedback-quiz-5th-floor$ kubectl -n homework-1 get pods -o wide
-NAME                             READY   STATUS    RESTARTS   AGE   IP           NODE                        NOMINATED NODE   READINESS GATES
-feedback-quiz-58fdb5b98f-gj4j6   1/1     Running   0          81s   10.244.0.7   hosting-lab-control-plane   <none>           <none>
-feedback-quiz-58fdb5b98f-tn8rj   1/1     Running   0          81s   10.244.0.8   hosting-lab-control-plane   <none>           <none>
-dima@DESKTOP-A65H6VF:/mnt/d/Dima/3University/DevOps/feedback-quiz-5th-floor$ kubectl -n homework-1 port-forward deployment/feedback-quiz 8082:8080
-Forwarding from 127.0.0.1:8082 -> 8080
-Forwarding from [::1]:8082 -> 8080
-Handling connection for 8082
-^Cdima@DESKTOP-A65H6VF:/mnt/d/Dima/3University/DevOps/feedback-quiz-5th-floorkubectl -n homework-1 delete pod  feedback-quiz-58fdb5b98f-gj4j6
-pod "feedback-quiz-58fdb5b98f-gj4j6" deleted from homework-1 namespace
-dima@DESKTOP-A65H6VF:/mnt/d/Dima/3University/DevOps/feedback-quiz-5th-floor$ kubectl -n homework-1 port-forward deployment/feedback-quiz 8082:8080
-Forwarding from 127.0.0.1:8082 -> 8080
-Forwarding from [::1]:8082 -> 8080
-Handling connection for 8082
-Handling connection for 8082
-Handling connection for 8082
-Handling connection for 8082
-Handling connection for 8082
-E1023 13:59:42.553347   48346 portforward.go:549] "An error occurred forwarding" err="error forwarding port 8080 to pod 408e60cfae7678fd42a5daffbb5a701fae06dac00f0ac3ca7ba212ce4f62974e, uid : network namespace for sandbox \"408e60cfae7678fd42a5daffbb5a701fae06dac00f0ac3ca7ba212ce4f62974e\" is closed" localPort=8082 remotePort=8080
-error: lost connection to pod
-dima@DESKTOP-A65H6VF:/mnt/d/Dima/3University/DevOps/feedback-quiz-5th-floor$ kubectl -n homework-1 port-forward deployment/feedback-quiz 8082:8080
-Forwarding from 127.0.0.1:8082 -> 8080
-Forwarding from [::1]:8082 -> 8080
-Handling connection for 8082
-^Cdima@DESKTOP-A65H6VF:/mnt/d/Dima/3University/DevOps/feedback-quiz-5th-floorgit initit
-hint: Using 'master' as the name for the initial branch. This default branch name
-hint: is subject to change. To configure the initial branch name to use in all
-hint: of your new repositories, which will suppress this warning, call:
-hint:
-hint:   git config --global init.defaultBranch <name>
-hint:
-hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
-hint: 'development'. The just-created branch can be renamed via this command:
-hint:
-hint:   git branch -m <name>
-Initialized empty Git repository in /mnt/d/Dima/3University/DevOps/feedback-quiz-5th-floor/.git/
-dima@DESKTOP-A65H6VF:/mnt/d/Dima/3University/DevOps/feedback-quiz-5th-floor$ git remote add origin https://github.com/MDmitriy74/DevOps_course_repo.git
-dima@DESKTOP-A65H6VF:/mnt/d/Dima/3University/DevOps/feedback-quiz-5th-floor$ git remote -v
-origin  https://github.com/MDmitriy74/DevOps_course_repo.git (fetch)
-origin  https://github.com/MDmitriy74/DevOps_course_repo.git (push)
-dima@DESKTOP-A65H6VF:/mnt/d/Dima/3University/DevOps/feedback-quiz-5th-floor$ kubectl -n homework-1 rollout status deployment/feedback-quizkubectl -n homework-1 get pods -o wide
-
- curl -i http://localhost:8082/
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Windows PowerShell
-(C) Корпорация Майкрософт (Microsoft Corporation). Все права защищены.
-
-Установите последнюю версию PowerShell для новых функций и улучшения! https://aka.ms/PSWindows
-
-PS C:\Users\HOMELite> curl -i http://localhost:8082/
-
-Командлет Invoke-WebRequest в конвейере команд в позиции 1
-Укажите значения для следующих параметров:
-Uri:
-PS C:\Users\HOMELite> wsl
-dima@DESKTOP-A65H6VF:/mnt/c/Users/HOMELite$ curl -i http://localhost:8082/
-HTTP/1.1 200 OK
-Content-Type: application/json; charset=utf-8
-Date: Fri, 23 Oct 2026 08:39:12 GMT
-Server: Kestrel
-Transfer-Encoding: chunked
-
-{"message":"Feedback quiz is running in Kubernetes","author":"Dima","tokenCodima@DESKTOP-A65H6VF:/mnt/c/Users/HOMELite$ curl -sS http://localhost:8082/
-{"message":"Feedback quiz is running in Kubernetes","author":"Dima","tokenCodima@DESKTOP-A65H6VF:/mnt/c/Users/HOMELite$ sed -i 's/Feedback quiz is running in Kubernetes/Feedback quiz configuration was changed/' k8s/configmap.yaml/configmap.yaml
-sed: can't read k8s/configmap.yaml: No such file or directory
-dima@DESKTOP-A65H6VF:/mnt/c/Users/HOMELite$ kubectl -n homework-1 apply -f k8s/configmap.yaml
-error: the path "k8s/configmap.yaml" does not exist
-dima@DESKTOP-A65H6VF:/mnt/c/Users/HOMELite$ curl -sS http://localhost:8082/
-{"message":"Feedback quiz is running in Kubernetes","author":"Dima","tokenCodima@DESKTOP-A65H6VF:/mnt/c/Users/HOMELite$ kubectl -n homework-1 rollout restart deployment/feedback-quizt/feedback-quiz
-deployment.apps/feedback-quiz restarted
-dima@DESKTOP-A65H6VF:/mnt/c/Users/HOMELite$ kubectl -n homework-1 rollout status deployment/feedback-quiz
-deployment "feedback-quiz" successfully rolled out
-dima@DESKTOP-A65H6VF:/mnt/c/Users/HOMELite$ kubectl -n homework-1 get pods -o wide
-NAME                             READY   STATUS    RESTARTS   AGE   IP            NODE                        NOMINATED NODE   READINESS GATES
-feedback-quiz-6987cd444c-d8b4d   1/1     Running   0          13s   10.244.0.11   hosting-lab-control-plane   <none>           <none>
-feedback-quiz-6987cd444c-z4r22   1/1     Running   0          14s   10.244.0.10   hosting-lab-control-plane   <none>           <none>
-dima@DESKTOP-A65H6VF:/mnt/c/Users/HOMELite$ curl -sS http://localhost:8082/
-curl: (52) Empty reply from server
-dima@DESKTOP-A65H6VF:/mnt/c/Users/HOMELite$ curl -sS http://localhost:8082/
-{"message":"Feedback quiz configuration was changed","author":"Dima","tokenConfigured":true}dima@DESKTOP-A65H6VF:/mnt/c/Users/HOMELite$
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-dima@DESKTOP-A65H6VF:/mnt/d/Dima/3University/DevOps$ curl -i http://localhost:8082/ | tee experiment-2-before.txt
-  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
-                                 Dload  Upload   Total   Spent    Left  Speed
-100    91    0    91    0     0    689      0 --:--:-- --:--:-- --:--:--   694
-HTTP/1.1 200 OK
-Content-Type: application/json; charset=utf-8
-Date: Fri, 23 Oct 2026 08:53:44 GMT
-Server: Kestrel
-Transfer-Encoding: chunked
-
-{"message":"Feedback quiz is running in Kubernetes","author":"Dima","tokenConfigured":true}dima@DESKTOP-A65H6VF:/mnt/d/Ddima@DESKTOP-A65H6VF:/mnt/d/Dima/3University/DevOps$ sed -i 's/Feedback quiz is running in Kubernetes/Feedback quiz configuration was changed/' k8s/configmap.yaml
-sed: can't read k8s/configmap.yaml: No such file or directory
-dima@DESKTOP-A65H6VF:/mnt/d/Dima/3University/DevOps$ cd feedback-quiz-5th-floor
-dima@DESKTOP-A65H6VF:/mnt/d/Dima/3University/DevOps/feedback-quiz-5th-floor$ sed -i 's/Feedback quiz is running in Kubernetes/Feedback quiz configuration was changed/' k8s/configmap.yaml
-dima@DESKTOP-A65H6VF:/mnt/d/Dima/3University/DevOps/feedback-quiz-5th-floor$ kubectl -n homework-1 apply -f k8s/configmap.yaml
-configmap/feedback-quiz-config configured
-dima@DESKTOP-A65H6VF:/mnt/d/Dima/3University/DevOps/feedback-quiz-5th-floor$ kubectl -n homework-1 get configmap feedback-quiz-config \
-  -o jsonpath='{.data.APP_MESSAGE}{"\n"}'
-Feedback quiz configuration was changed
-dima@DESKTOP-A65H6VF:/mnt/d/Dima/3University/DevOps/feedback-quiz-5th-floor$ kubectl -n homework-1 get configmap feedback-quiz-config \
-  -o jsonpath='{.data.APP_MESSAGE}{"\n"}'
-Feedback quiz configuration was changed
-dima@DESKTOP-A65H6VF:/mnt/d/Dima/3University/DevOps/feedback-quiz-5th-floor$ curl -i http://localhost:8082/ | tee experiment-2-after-configmap.txt
-  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
-                                 Dload  Upload   Total   Spent    Left  Speed
-100    91    0    91    0     0  14019      0 --:--:-- --:--:-- --:--:-- 15166
-HTTP/1.1 200 OK
-Content-Type: application/json; charset=utf-8
-Date: Fri, 23 Oct 2026 08:58:29 GMT
-Server: Kestrel
-Transfer-Encoding: chunked
-
-{"message":"Feedback quiz is running in Kubernetes","author":"Dima","tokenConfigured":true}dima@DESKTOP-A65H6VF:/mnt/d/Dima/3University/DevOps/feedback-quiz-5th-floor$
-
-
-
-
-
-
-
-
-разные ТЕРМИНАЛЫ, КОМАНДЫ И Т.Д.
+kubectl -n homework-2 describe pod feedback-quiz-df9ccd99d-48w7r
+Name:             feedback-quiz-df9ccd99d-48w7r
+Namespace:        homework-2
+Priority:         0
+Service Account:  default
+Node:             hosting-lab-control-plane/172.21.0.2
+Start Time:       Thu, 29 Oct 2026 23:13:58 +0500
+Labels:           app=feedback-quiz
+                  pod-template-hash=df9ccd99d
+Annotations:      <none>
+Status:           Running
+IP:               10.244.0.8
+IPs:
+  IP:           10.244.0.8
+Controlled By:  ReplicaSet/feedback-quiz-df9ccd99d
+Containers:
+  feedback-quiz:
+    Container ID:   containerd://317136f1b51471544f6d2bffcd4f9a4ec58f647b2342b3d208c800b10e76ef0b
+    Image:          localhost:5001/dima-feedback-quiz:v3
+    Image ID:       sha256:3e9189c736111e140608344654ade980bd5d551b0298fb8c833edb218d116552
+    Port:           8080/TCP (http)
+    Host Port:      0/TCP (http)
+    State:          Running
+      Started:      Fri, 30 Oct 2026 12:07:23 +0500
+    Last State:     Terminated
+      Reason:       Completed
+      Exit Code:    0
+      Started:      Fri, 30 Oct 2026 12:06:37 +0500
+      Finished:     Fri, 30 Oct 2026 12:07:22 +0500
+    Ready:          True
+    Restart Count:  2
+    Limits:
+      cpu:                500m
+      ephemeral-storage:  1Gi
+      memory:             512Mi
+    Requests:
+      cpu:                100m
+      ephemeral-storage:  256Mi
+      memory:             128Mi
+    Liveness:             http-get http://:http/live delay=0s timeout=2s period=3s successThreshold=1 failureThreshold=2
+    Readiness:            http-get http://:http/ready delay=0s timeout=2s period=2s successThreshold=1 failureThreshold=1
+    Startup:              http-get http://:http/live delay=0s timeout=1s period=2s successThreshold=1 failureThreshold=15
+    Environment Variables from:
+      feedback-quiz-config  ConfigMap  Optional: false
+      feedback-quiz-secret  Secret     Optional: false
+    Environment:
+      POD_NAME:  feedback-quiz-df9ccd99d-48w7r (v1:metadata.name)
+    Mounts:
+      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-knbrx (ro)
+Conditions:
+  Type                        Status
+  PodReadyToStartContainers   True
+  Initialized                 True
+  Ready                       True
+  ContainersReady             True
+  PodScheduled                True
+Volumes:
+  kube-api-access-knbrx:
+    Type:                    Projected (a volume that contains injected data from multiple sources)
+    TokenExpirationSeconds:  3607
+    ConfigMapName:           kube-root-ca.crt
+    Optional:                false
+    DownwardAPI:             true
+QoS Class:                   Burstable
+Node-Selectors:              <none>
+Tolerations:                 node.kubernetes.io/not-ready:NoExecute op=Exists for 300s
+                             node.kubernetes.io/unreachable:NoExecute op=Exists for 300s
+Events:
+  Type     Reason     Age                   From     Message
+  ----     ------     ----                  ----     -------
+  Warning  Unhealthy  2m47s                 kubelet  spec.containers{feedback-quiz}: Readiness probe failed: Get "http://10.244.0.8:8080/ready": dial tcp 10.244.0.8:8080: connect: connection refused
+  Warning  Unhealthy  2m3s (x4 over 2m49s)  kubelet  spec.containers{feedback-quiz}: Liveness probe failed: HTTP probe failed with statuscode: 503
+  Normal   Killing    2m3s (x2 over 2m48s)  kubelet  spec.containers{feedback-quiz}: Container feedback-quiz failed liveness probe, will be restarted
+  Normal   Pulled     2m2s (x3 over 12h)    kubelet  spec.containers{feedback-quiz}: Container image "localhost:5001/dima-feedback-quiz:v3" already present on machine
+  Normal   Created    2m2s (x3 over 12h)    kubelet  spec.containers{feedback-quiz}: Created container: feedback-quiz
+  Normal   Started    2m2s (x3 over 12h)    kubelet  spec.containers{feedback-quiz}: Started container feedback-quiz
+  Warning  Unhealthy  112s (x19 over 12h)   kubelet  spec.containers{feedback-quiz}: Startup probe failed: HTTP probe failed with statuscode: 503
+dima@DESKTOP-A65H6VF:/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/f6f12dcae8ba22ea47d0a91f1369525a65610ae391c867c2b4a4c0ddab35897a$ kubectl -n homework-2 logs feedback-quiz-df9ccd99d-48w7r  --previous
+
+[07:06:38 WRN] Overriding HTTP_PORTS '8080' and HTTPS_PORTS ''. Binding to values defined by URLS instead 'http://0.0.0.0:8080'.
+[07:06:38 INF] Now listening on: http://0.0.0.0:8080
+[07:06:38 INF] Application started. Press Ctrl+C to shut down.
+[07:06:38 INF] Hosting environment: Production
+[07:06:38 INF] Content root path: /app
+[07:07:22 INF] Application is shutting down...

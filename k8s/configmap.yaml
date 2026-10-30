@@ -2,7 +2,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: feedback-quiz-config
-  namespace: homework-1
+  namespace: homework-2
 data:
   APP_MESSAGE: "Feedback quiz configuration was changed"
   APP_AUTHOR: "Dima"

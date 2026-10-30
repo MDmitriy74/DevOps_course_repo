@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: feedback-quiz
+  namespace: homework-2
+spec:
+  type: ClusterIP
+  selector:
+    app: feedback-quiz
+  ports:
+    - name: http
+      port: 80
+      targetPort: http

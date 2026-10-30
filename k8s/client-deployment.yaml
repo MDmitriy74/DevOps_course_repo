@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: feedback-client
+  namespace: homework-2
+  labels:
+    app: feedback-client
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: feedback-client
+  template:
+    metadata:
+      labels:
+        app: feedback-client
+    spec:
+      containers:
+        - name: feedback-client
+          image: localhost:5001/feedback-client:v1
+          envFrom:
+            - configMapRef:
+                name: feedback-client-config

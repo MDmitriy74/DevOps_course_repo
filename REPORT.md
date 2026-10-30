@@ -94,9 +94,11 @@ feedback-quiz-df9ccd99d-4q6w7   1/1     Running   0             12h
 feedback-quiz-df9ccd99d-b2cws   1/1     Running   0             12h
 ```
 
-Перезапуск аосле запроса death происходил может секунд 20.   uuid сохранился ведь kuber не удалил под, а перезапустил контейнер внутри него. Так как увидел что livenessProbe упала.   Client получает запросы без ошибок т.к. Service отправил их на другие реплики
+Перезапуск после запроса death происходил может секунд 20.   uuid сохранился ведь kuber не удалил под, а перезапустил контейнер внутри него. Так как увидел что livenessProbe упала.   Client получает запросы без ошибок т.к. Service отправил их на другие реплики
 
 ### 2
+
+перед экспериментом так:
 ```bash
 IP:               10.244.0.8
 IPs:
@@ -166,7 +168,8 @@ feedback-quiz-df9ccd99d-48w7r   1/1     Running   3 (32m ago)   13h   10.244
 ```
 Readiness проба не отвечает за перезапуск. - только за то можно ли направить трафик пользователей на него или нет.
 клиент продолжил получать хорошие сообщения - сервис перенаправил на другие реплики. 
-
+после curl -i http://localhost:8082/ready-again
+под опять стал ready 1/1
 ### 3
 
 начало:
@@ -258,3 +261,75 @@ feedback-quiz-df9ccd99d    0         0         0       14h
 В процессе обновления создавались 4-тые дополнительные реплики, потом удалялись (я с 3-мя работаю)
 
 создавались 3 новые поды с новой v4 версией которые заменяли старые. maxSurge: 1 - разрешила создать максимум одну доп. Поэтому у клиента все работало.
+
+
+
+### Ingres
+
+повторил эксперимент:
+```bash
+
+kubectl -n homework-2 port-forward pod/feedback-quiz-5569b89fd5-74s4t 8082:8080
+
+curl -i http://localhost:8082/ready-againost:8082/ready-again
+
+curl -i http://localhost:8082/ready
+
+curl -i http://localhost:8082/not-ready
+
+curl -i http://localhost:8082/live
+
+
+dima@DESKTOP-A65H6VF:/mnt/d/Dima/3University/DevOps/hw2/first$ kubectl -n homework-2 get pods -l app=feedback-quiz -w
+NAME                             READY   STATUS    RESTARTS   AGE
+feedback-quiz-5569b89fd5-74s4t   0/1     Running   0          67m
+feedback-quiz-5569b89fd5-cqfl8   1/1     Running   0          66m
+feedback-quiz-5569b89fd5-hpjlk   1/1     Running   0          66m
+feedback-quiz-5569b89fd5-74s4t   1/1     Running   0          67m
+```
+Для варианта с ingres обращение идёт через traefik.ingress-system.svc.cluster.local. А в прямом варианте - по днс имени сервис приложения feedback-quiz.homework-2.svc.cluster.local
+
+localhost внутри client Pod - означает саму поду а не траефик или мой компьютер
+
+Для связи сервисов внутри кластера достаточно ClusterIP Service. Ингрес будет иметь смысл для внешнего http(s) доступа, маршрутизации по доменам и путям
+
+![alt text](image.png)
+вернуть клиент на обычный сервис:
+kubectl apply -f k8s/client-configmap.yaml
+kubectl -n homework-2 rollout restart deployment/feedback-client
+
+
+## Команды для докера
+теги были v3 и v4
+
+
+docker build -t localhost:5001/dima-feedback-quiz:v4 ./_Src/GFeed.WebApiApp
+
+ docker push localhost:5001/dima-feedback-quiz:v4
+
+
+  kind load docker-image localhost:5001/dima-feedback-quiz:v4 --name hosting-lab
+
+
+Команды для удаления:
+kubectl delete -f k8s/client-deployment.yaml
+
+kubectl delete -f k8s/client-configmap-ingress.yaml
+kubectl delete -f k8s/client-configmap.yaml
+
+kubectl delete -f k8s/service.yaml
+
+
+kubectl delete -f k8s/deployment.yaml
+
+kubectl delete -f k8s/configmap.yaml
+
+kubectl delete -f k8s/secret.yaml
+
+kubectl delete -f k8s/namespace.yaml
+
+kubectl get all -n homework-2
+
+kubectl delete -f k8s/ingress.yaml
+
+

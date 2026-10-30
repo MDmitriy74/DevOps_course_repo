@@ -83,3 +83,355 @@ dima@DESKTOP-A65H6VF:/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/f6f12dcae8ba22ea
 [07:06:38 INF] Hosting environment: Production
 [07:06:38 INF] Content root path: /app
 [07:07:22 INF] Application is shutting down...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+2 эксперимент:
+
+
+
+HTTP/1.1 200 OK
+Content-Type: application/json; charset=utf-8
+Date: Fri, 30 Oct 2026 07:45:02 GMT
+Server: Kestrel
+Transfer-Encoding: chunked
+
+{"message":"Feedback quiz configuration was changed","author":"Dima","tokenConfigured":true,"podName":"feedback-quiz-df9ccd99d-48w7r"}dima@DESKTOP-A65H6VF:/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/f6f12dcacurl -i http://localhost:8082/livec867c2b4a4c0ddab35897a$ curl -i http://localhost:8082/live
+HTTP/1.1 200 OK
+Content-Length: 0
+Date: Fri, 30 Oct 2026 07:45:14 GMT
+Server: Kestrel
+
+dima@DESKTOP-A65H6VF:/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/f6f12dcae8ba22ea47d0a91f1369525a65610ae391c867c2b4a4c0ddab35897a$ curl -i http://localhost:8082/ready
+HTTP/1.1 200 OK
+Content-Length: 0
+Date: Fri, 30 Oct 2026 07:45:24 GMT
+Server: Kestrel
+
+dima@DESKTOP-A65H6VF:/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/f6f12dcae8ba22ea47d0a91f1369525a65610ae391c867c2b4a4c0ddab35897a$ kubectl -n homework-2 get endpointslices \
+  -l kubernetes.io/service-name=feedback-quiz -o wide
+NAME                  ADDRESSTYPE   PORTS   ENDPOINTS                          AGE
+feedback-quiz-v47k6   IPv4          8080    10.244.0.9,10.244.0.7,10.244.0.8   13h
+dima@DESKTOP-A65H6VF:/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/f6f12dcae8ba22ea47d0a91f1369525a65610ae391c867c2b4a4c0ddab35897a$ date -u
+Fri Oct 30 07:48:26 UTC 2026
+dima@DESKTOP-A65H6VF:/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/f6f12dcae8ba22ea47d0a91f1369525a65610ae391c867c2b4a4c0ddab35897a$ curl -i http://localhost:8082/not-ready
+HTTP/1.1 200 OK
+Content-Length: 0
+Date: Fri, 30 Oct 2026 07:48:35 GMT
+Server: Kestrel
+
+dima@DESKTOP-A65H6VF:/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/f6f12dcae8ba22ea47d0a91f1369525a65610ae391c867c2b4a4c0ddab35897a$ curl -i http://localhost:8082/ready
+HTTP/1.1 503 Service Unavailable
+Content-Type: application/problem+json; charset=utf-8
+Date: Fri, 30 Oct 2026 07:48:41 GMT
+Server: Kestrel
+Transfer-Encoding: chunked
+
+{"type":"https://tools.ietf.org/html/rfc9110#section-15.6.4","title":"Service Unavailable","status":503,"traceId":"00-e0c90c75813279f27059bc525c79193d-c7e4db09e6bec68f-00"}dima@DESKTOP-A65H6VF:/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/f6f12dcae8ba22ea47d0a91f1369525a65610ae391c867curl -i http://localhost:8082/readylocalhost:8082/ready
+HTTP/1.1 503 Service Unavailable
+Content-Type: application/problem+json; charset=utf-8
+Date: Fri, 30 Oct 2026 07:48:48 GMT
+Server: Kestrel
+Transfer-Encoding: chunked
+
+{"type":"https://tools.ietf.org/html/rfc9110#section-15.6.4","title":"Service Unavailable","status":503,"traceId":"00-8d6f50452be7556477b9b907b3cb0a83-7736909073c02491-00"}dima@DESKTOP-A65H6VF:/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/f6f12dcae8ba22ea47d0a91f1369525a65610ae391c867curl -i http://localhost:8082/live/localhost:8082/live
+HTTP/1.1 200 OK
+Content-Length: 0
+Date: Fri, 30 Oct 2026 07:48:54 GMT
+Server: Kestrel
+
+dima@DESKTOP-A65H6VF:/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/f6f12dcae8ba22ea47d0a91f1369525a65610ae391c867c2b4a4c0ddab35897a$ curl -i http://localhost:8082/
+
+HTTP/1.1 200 OK
+Content-Type: application/json; charset=utf-8
+Date: Fri, 30 Oct 2026 07:49:07 GMT
+Server: Kestrel
+Transfer-Encoding: chunked
+
+{"message":"Feedback quiz configuration was changed","author":"Dima","tokenConfigured":true,"podName":"feedback-quiz-df9ccd99d-48w7r"}dima@DESKTOP-A65H6VF:/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/f6f12dcae8ba22ea47d0a91f13695curl -i http://localhost:8082/ready$ curl -i http://localhost:8082/ready
+HTTP/1.1 503 Service Unavailable
+Content-Type: application/problem+json; charset=utf-8
+Date: Fri, 30 Oct 2026 07:51:18 GMT
+Server: Kestrel
+Transfer-Encoding: chunked
+
+{"type":"https://tools.ietf.org/html/rfc9110#section-15.6.4","title":"Service Unavailable","status":503,"traceId":"00-ebd74c661dd839852879591a789b734d-2f3038edd889e53c-00"}dima@DESKTOP-A65H6VF:/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/f6f12dcae8ba22ea47d0a91f1369525a65610ae391c867c2b4a4c0ddab35897a$ curl -i http://localhost:8082/ready-again
+HTTP/1.1 200 OK
+Content-Length: 0
+Date: Fri, 30 Oct 2026 07:52:41 GMT
+Server: Kestrel
+
+dima@DESKTOP-A65H6VF:/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/f6f12dcae8ba22ea47d0a91f1369525a65610ae391c867c2b4a4c0ddab35897a$ curl -i http://localhost:8082/ready
+HTTP/1.1 200 OK
+Content-Length: 0
+Date: Fri, 30 Oct 2026 07:52:48 GMT
+Server: Kestrel
+
+dima@DESKTOP-A65H6VF:/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/f6f12dcae8ba22ea47d0a91f1369525a65610ae391c867c2b4a4c0ddab35897a$ kubectl apply -f .\k8s\deployment.yaml
+error: the path ".k8sdeployment.yaml" does not exist
+dima@DESKTOP-A65H6VF:/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/f6f12dcae8ba22ea47d0a91f1369525a65610ae391c867c2b4a4c0ddab35897a$ kubectl -n homework-2 get deployment <имя-Deployment> -o wide
+-bash: имя-Deployment: No such file or directory
+dima@DESKTOP-A65H6VF:/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/f6f12dcae8ba22ea47d0a91f1369525a65610ae391c867c2b4a4c0ddab35897a$ kubectl -n homework-2 get deployment <имя-Deployment>^Co wide
+dima@DESKTOP-A65H6VF:/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/f6f12dcae8ba22ea47d0a91f1369525a65610ae391c867c2b4a4c0ddab35897a$
+dima@DESKTOP-A65H6VF:/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/f6f12dcae8ba22ea47d0a91f1369525a65610ae391c867c2b4a4c0ddab35897a$
+dima@DESKTOP-A65H6VF:/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/f6f12dcae8ba22ea47d0a91f1369525a65610ae391c867c2b4a4c0ddab35897a$
+dima@DESKTOP-A65H6VF:/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/f6f12dcae8ba22ea47d0a91f1369525a65610ae391c867c2b4a4c0ddab35897a$
+dima@DESKTOP-A65H6VF:/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/f6f12dcae8ba22ea47d0a91f1369525a65610ae391c867c2b4a4c0ddab35897a$
+dima@DESKTOP-A65H6VF:/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/f6f12dcae8ba22ea47d0a91f1369525a65610ae391c867c2b4a4c0ddab35897a$
+dima@DESKTOP-A65H6VF:/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/f6f12dcae8ba22ea47d0a91f1369525a65610ae391c867c2b4a4c0ddab35897a$
+dima@DESKTOP-A65H6VF:/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/f6f12dcae8ba22ea47d0a91f1369525a65610ae391c867c2b4a4c0ddab35897a$
+dima@DESKTOP-A65H6VF:/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/f6f12dcae8ba22ea47d0a91f1369525a65610ae391c867c2b4a4c0ddab35897a$
+dima@DESKTOP-A65H6VF:/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/f6f12dcae8ba22ea47d0a91f1369525a65610ae391c867c2b4a4c0ddab35897a$
+dima@DESKTOP-A65H6VF:/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/f6f12dcae8ba22ea47d0a91f1369525a65610ae391c867c2b4a4c0ddab35897a$
+dima@DESKTOP-A65H6VF:/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/f6f12dcae8ba22ea47d0a91f1369525a65610ae391c867c2b4a4c0ddab35897a$
+dima@DESKTOP-A65H6VF:/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/f6f12dcae8ba22ea47d0a91f1369525a65610ae391c867c2b4a4c0ddab35897a$
+dima@DESKTOP-A65H6VF:/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/f6f12dcae8ba22ea47d0a91f1369525a65610ae391c867c2b4a4c0ddab35897a$
+dima@DESKTOP-A65H6VF:/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/f6f12dcae8ba22ea47d0a91f1369525a65610ae391c867c2b4a4c0ddab35897a$
+dima@DESKTOP-A65H6VF:/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/f6f12dcae8ba22ea47d0a91f1369525a65610ae391c867c2b4a4c0ddab35897a$
+dima@DESKTOP-A65H6VF:/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/f6f12dcae8ba22ea47d0a91f1369525a65610ae391c867c2b4a4c0ddab35897a$ kubectl -n homework-2 get deployment feedback-quiz -w
+NAME            READY   UP-TO-DATE   AVAILABLE   AGE
+feedback-quiz   3/3     3            3           14h
+^Cdima@DESKTOP-A65H6VF:/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/f6f12dcae8ba22ea47d0a91f1369525a65610ae391c867c2b4a4c0ddab35897a$ kubectl -n homework-2 get rs -l app=feedback-quiz
+NAME                      DESIRED   CURRENT   READY   AGE
+feedback-quiz-df9ccd99d   3         3         3       14h
+dima@DESKTOP-A65H6VF:/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/f6f12dcae8ba22ea47d0a91f1369525a65610ae391c867c2b4a4c0ddab35897a$ docker build -t localhost:5001/dima-feedback-quiz:v4 ./_Src/GFeed.WebApiApp
+[+] Building 29.8s (16/16) FINISHED                          docker:default
+ => [internal] load build definition from Dockerfile                   0.1s
+ => => transferring dockerfile: 606B                                   0.0s
+ => [internal] load metadata for mcr.microsoft.com/dotnet/aspnet:10.0  1.0s
+ => [internal] load metadata for mcr.microsoft.com/dotnet/sdk:10.0     1.0s
+ => [internal] load .dockerignore                                      0.1s
+ => => transferring context: 380B                                      0.0s
+ => [publish 1/6] FROM mcr.microsoft.com/dotnet/sdk:10.0@sha256:de4fe  0.0s
+ => [internal] load build context                                      0.1s
+ => => transferring context: 7.92kB                                    0.1s
+ => [base 1/2] FROM mcr.microsoft.com/dotnet/aspnet:10.0@sha256:de0ee  0.0s
+ => CACHED [publish 2/6] WORKDIR /src                                  0.0s
+ => [publish 3/6] COPY [GFeed.WebApiApp.csproj, ./]                    0.1s
+ => [publish 4/6] RUN dotnet restore "GFeed.WebApiApp.csproj"         22.5s
+ => [publish 5/6] COPY . .                                             0.0s
+ => [publish 6/6] RUN dotnet publish "GFeed.WebApiApp.csproj" -c Rele  5.6s
+ => CACHED [base 2/2] WORKDIR /app                                     0.0s
+ => CACHED [final 1/2] WORKDIR /app                                    0.0s
+ => [final 2/2] COPY --from=publish /app/publish .                     0.1s
+ => exporting to image                                                 0.1s
+ => => exporting layers                                                0.0s
+ => => writing image sha256:e6f7fd7373739e796f789b8f41b9e8e557ef0c096  0.0s
+ => => naming to localhost:5001/dima-feedback-quiz:v4                  0.0s
+dima@DESKTOP-A65H6VF:/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/f6f12dcae8ba22ea47d0a91f1369525a65610ae391c867c2b4a4c0ddab35897a$ docker push localhost:5001/dima-feedback-quiz:v4
+The push refers to repository [localhost:5001/dima-feedback-quiz]
+6270606ba1b5: Pushed
+5f70bf18a086: Layer already exists
+d9167c7aa611: Layer already exists
+eaa51743b39d: Layer already exists
+361fe91f35cc: Layer already exists
+2c16277b36ff: Layer already exists
+7be251a39e9c: Layer already exists
+fa09e76fa81b: Layer already exists
+bec87777bc2f: Layer already exists
+v4: digest: sha256:5c53b2f507a314e93174b25f6ec504c2a047c8f1dbaac5286801595564e97704 size: 2203
+dima@DESKTOP-A65H6VF:/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/f6f12dcae8ba22ea47d0a91f1369525a65610ae391c867c2b4a4c0ddab35897a$ kind load docker-image localhost:5001/dima-feedback-quiz:v4 --name hosting-lab
+Image: "localhost:5001/dima-feedback-quiz:v4" with ID "sha256:e6f7fd7373739e796f789b8f41b9e8e557ef0c0964e8e0cf68f99aad9e621da0" not yet present on node "hosting-lab-control-plane", loading...
+dima@DESKTOP-A65H6VF:/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/f6f12dcae8ba22ea47d0a91f1369525a65610ae391c867c2b4a4c0ddab35897a$ date -u
+Fri Oct 30 08:19:37 UTC 2026
+dima@DESKTOP-A65H6VF:/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/f6f12dcae8ba22ea47d0a91f1369525a65610ae391c867c2b4a4c0ddab35897a$ kubectl apply -f deployment.yaml
+error: the path "deployment.yaml" does not exist
+dima@DESKTOP-A65H6VF:/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/f6f12dcae8ba22ea47d0a91f1369525a65610ae391c867c2b4a4c0ddab35897a$ kubectl -n homework-2 set image deployment/feedback-quiz \
+  feedback-quiz=localhost:5001/dima-feedback-quiz:v4
+deployment.apps/feedback-quiz image updated
+dima@DESKTOP-A65H6VF:/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/f6f12dcae8ba22ea47d0a91f1369525a65610ae391c867c2b4a4c0ddab35897a$ kubectl -n homework-2 rollout history deployment/feedback-quiz
+deployment.apps/feedback-quiz
+REVISION  CHANGE-CAUSE
+1         <none>
+2         <none>
+
+dima@DESKTOP-A65H6VF:/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/f6f12dcae8ba22ea47d0a91f1369525a65610ae391c867c2b4a4c0ddab35897a$ kubectl -n homework-2 get pods -l app=feedback-quiz -o wide
+NAME                             READY   STATUS    RESTARTS   AGE    IP            NODE                        NOMINATED NODE   READINESS GATES
+feedback-quiz-5569b89fd5-74s4t   1/1     Running   0          119s   10.244.0.13   hosting-lab-control-plane   <none>           <none>
+feedback-quiz-5569b89fd5-cqfl8   1/1     Running   0          78s    10.244.0.15   hosting-lab-control-plane   <none>           <none>
+feedback-quiz-5569b89fd5-hpjlk   1/1     Running   0          100s   10.244.0.14   hosting-lab-control-plane   <none>           <none>
+dima@DESKTOP-A65H6VF:/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/f6f12dcae8ba22ea47d0a91f1369525a65610ae391c867c2b4a4c0ddab35897a$ kubectl -n homework-2 get replicasets -l app=feedback-quiz
+NAME                       DESIRED   CURRENT   READY   AGE
+feedback-quiz-5569b89fd5   3         3         3       2m7s
+feedback-quiz-df9ccd99d    0         0         0       14h
+dima@DESKTOP-A65H6VF:/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/f6f12dcae8ba22ea47d0a91f1369525a65610ae391c867c2b4a4c0ddab35897a$ kubectl -n homework-2 rollout status deployment/feedback-quiz --timeout=180s
+deployment "feedback-quiz" successfully rolled out
+dima@DESKTOP-A65H6VF:/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/f6f12dcae8ba22ea47d0a91f1369525a65610ae391c867c2b4a4c0ddab35897a$
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+другой терминал с логами и порт-форвадинг:
+dima@DESKTOP-A65H6VF:/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/f6f12dcae8ba22ea47d0a91f1369525a65610ae391c867c2b4a4c0ddab35897a$ kubectl -n homework-2 port-forward pod/feedback-quiz-df9ccd99d-48w7r 8082:8080
+Forwarding from 127.0.0.1:8082 -> 8080
+Forwarding from [::1]:8082 -> 8080
+date -u
+Handling connection for 8082
+curl -i http://localhost:8082/liveHandling connection for 8082
+Handling connection for 8082
+Handling connection for 8082
+Handling connection for 8082
+Handling connection for 8082
+Handling connection for 8082
+Handling connection for 8082
+Handling connection for 8082
+Handling connection for 8082
+Handling connection for 8082
+Handling connection for 8082
+Handling connection for 8082
+Handling connection for 8082
+Handling connection for 8082
+Handling connection for 8082
+^Cdima@DESKTOP-A65H6VF:/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/f6f12dcae8ba22ea47d0a91f1369525a65610ae391c867c2b4a4c0ddab35897a$ kubectl -n homework-2 port-forward pofeedback-quiz-df9ccd99d-48w7r7r 8082:8080
+Forwarding from 127.0.0.1:8082 -> 8080
+Forwarding from [::1]:8082 -> 8080
+Handling connection for 8082
+Handling connection for 8082
+Handling connection for 8082
+^Cdima@DESKTOP-A65H6VF:/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/f6f12dcae8ba22ea47d0a91f1369525a65610ae391c867c2b4a4c0ddab35897a$ kubectl -n homework-2 get events --sort-by=.lastTimestamp -w
+warning: --watch requested, --sort-by will be ignored for watch events received
+LAST SEEN   TYPE      REASON      OBJECT                              MESSAGE
+42m         Normal    Pulled      pod/feedback-quiz-df9ccd99d-48w7r   Container image "localhost:5001/dima-feedback-quiz:v3" already present on machine
+42m         Normal    Created     pod/feedback-quiz-df9ccd99d-48w7r   Created container: feedback-quiz
+42m         Normal    Started     pod/feedback-quiz-df9ccd99d-48w7r   Started container feedback-quiz
+42m         Warning   Unhealthy   pod/feedback-quiz-df9ccd99d-48w7r   Liveness probe failed: HTTP probe failed with statuscode: 503
+42m         Normal    Killing     pod/feedback-quiz-df9ccd99d-48w7r   Container feedback-quiz failed liveness probe, will be restarted
+42m         Warning   Unhealthy   pod/feedback-quiz-df9ccd99d-48w7r   Startup probe failed: HTTP probe failed with statuscode: 503
+27m         Warning   Unhealthy   pod/feedback-quiz-df9ccd99d-48w7r   Readiness probe failed: HTTP probe failed with statuscode: 503
+0s          Normal    ScalingReplicaSet   deployment/feedback-quiz            Scaled up replica set feedback-quiz-5569b89fd5 from 0 to 1
+0s          Normal    SuccessfulCreate    replicaset/feedback-quiz-5569b89fd5   Created pod: feedback-quiz-5569b89fd5-74s4t
+0s          Normal    Scheduled           pod/feedback-quiz-5569b89fd5-74s4t    Successfully assigned homework-2/feedback-quiz-5569b89fd5-74s4t to hosting-lab-control-plane
+0s          Normal    Pulled              pod/feedback-quiz-5569b89fd5-74s4t    Container image "localhost:5001/dima-feedback-quiz:v4" already present on machine
+0s          Normal    Created             pod/feedback-quiz-5569b89fd5-74s4t    Created container: feedback-quiz
+0s          Normal    Started             pod/feedback-quiz-5569b89fd5-74s4t    Started container feedback-quiz
+0s          Warning   Unhealthy           pod/feedback-quiz-5569b89fd5-74s4t    Startup probe failed: HTTP probe failed with statuscode: 503
+0s          Warning   Unhealthy           pod/feedback-quiz-5569b89fd5-74s4t    Startup probe failed: HTTP probe failed with statuscode: 503
+0s          Warning   Unhealthy           pod/feedback-quiz-5569b89fd5-74s4t    Startup probe failed: HTTP probe failed with statuscode: 503
+0s          Warning   Unhealthy           pod/feedback-quiz-5569b89fd5-74s4t    Startup probe failed: HTTP probe failed with statuscode: 503
+0s          Warning   Unhealthy           pod/feedback-quiz-5569b89fd5-74s4t    Startup probe failed: HTTP probe failed with statuscode: 503
+0s          Warning   Unhealthy           pod/feedback-quiz-5569b89fd5-74s4t    Startup probe failed: HTTP probe failed with statuscode: 503
+0s          Warning   Unhealthy           pod/feedback-quiz-5569b89fd5-74s4t    Startup probe failed: HTTP probe failed with statuscode: 503
+0s          Normal    ScalingReplicaSet   deployment/feedback-quiz              Scaled down replica set feedback-quiz-df9ccd99d from 3 to 2
+0s          Normal    ScalingReplicaSet   deployment/feedback-quiz              Scaled up replica set feedback-quiz-5569b89fd5 from 1 to 2
+0s          Normal    SuccessfulDelete    replicaset/feedback-quiz-df9ccd99d    Deleted pod: feedback-quiz-df9ccd99d-48w7r
+0s          Normal    Killing             pod/feedback-quiz-df9ccd99d-48w7r     Stopping container feedback-quiz
+0s          Normal    SuccessfulCreate    replicaset/feedback-quiz-5569b89fd5   Created pod: feedback-quiz-5569b89fd5-hpjlk
+0s          Normal    Scheduled           pod/feedback-quiz-5569b89fd5-hpjlk    Successfully assigned homework-2/feedback-quiz-5569b89fd5-hpjlk to hosting-lab-control-plane
+0s          Warning   Unhealthy           pod/feedback-quiz-df9ccd99d-48w7r     Readiness probe failed: Get "http://10.244.0.8:8080/ready": dial tcp 10.244.0.8:8080: connect: connection refused
+0s          Normal    Pulled              pod/feedback-quiz-5569b89fd5-hpjlk    Container image "localhost:5001/dima-feedback-quiz:v4" already present on machine
+0s          Normal    Created             pod/feedback-quiz-5569b89fd5-hpjlk    Created container: feedback-quiz
+0s          Normal    Started             pod/feedback-quiz-5569b89fd5-hpjlk    Started container feedback-quiz
+0s          Warning   Unhealthy           pod/feedback-quiz-5569b89fd5-hpjlk    Startup probe failed: HTTP probe failed with statuscode: 503
+0s          Warning   Unhealthy           pod/feedback-quiz-5569b89fd5-hpjlk    Startup probe failed: HTTP probe failed with statuscode: 503
+0s          Warning   Unhealthy           pod/feedback-quiz-5569b89fd5-hpjlk    Startup probe failed: HTTP probe failed with statuscode: 503
+0s          Warning   Unhealthy           pod/feedback-quiz-5569b89fd5-hpjlk    Startup probe failed: HTTP probe failed with statuscode: 503
+0s          Warning   Unhealthy           pod/feedback-quiz-5569b89fd5-hpjlk    Startup probe failed: HTTP probe failed with statuscode: 503
+0s          Warning   Unhealthy           pod/feedback-quiz-5569b89fd5-hpjlk    Startup probe failed: HTTP probe failed with statuscode: 503
+0s          Normal    ScalingReplicaSet   deployment/feedback-quiz              Scaled down replica set feedback-quiz-df9ccd99d from 2 to 1
+0s          Normal    SuccessfulDelete    replicaset/feedback-quiz-df9ccd99d    Deleted pod: feedback-quiz-df9ccd99d-4q6w7
+0s          Normal    Killing             pod/feedback-quiz-df9ccd99d-4q6w7     Stopping container feedback-quiz
+0s          Normal    ScalingReplicaSet   deployment/feedback-quiz              Scaled up replica set feedback-quiz-5569b89fd5 from 2 to 3
+0s          Normal    SuccessfulCreate    replicaset/feedback-quiz-5569b89fd5   Created pod: feedback-quiz-5569b89fd5-cqfl8
+0s          Normal    Scheduled           pod/feedback-quiz-5569b89fd5-cqfl8    Successfully assigned homework-2/feedback-quiz-5569b89fd5-cqfl8 to hosting-lab-control-plane
+0s          Normal    Pulled              pod/feedback-quiz-5569b89fd5-cqfl8    Container image "localhost:5001/dima-feedback-quiz:v4" already present on machine
+0s          Normal    Created             pod/feedback-quiz-5569b89fd5-cqfl8    Created container: feedback-quiz
+0s          Normal    Started             pod/feedback-quiz-5569b89fd5-cqfl8    Started container feedback-quiz
+0s          Warning   Unhealthy           pod/feedback-quiz-5569b89fd5-cqfl8    Startup probe failed: HTTP probe failed with statuscode: 503
+0s          Warning   Unhealthy           pod/feedback-quiz-5569b89fd5-cqfl8    Startup probe failed: HTTP probe failed with statuscode: 503
+0s          Warning   Unhealthy           pod/feedback-quiz-5569b89fd5-cqfl8    Startup probe failed: HTTP probe failed with statuscode: 503
+0s          Warning   Unhealthy           pod/feedback-quiz-5569b89fd5-cqfl8    Startup probe failed: HTTP probe failed with statuscode: 503
+0s          Warning   Unhealthy           pod/feedback-quiz-5569b89fd5-cqfl8    Startup probe failed: HTTP probe failed with statuscode: 503
+0s          Warning   Unhealthy           pod/feedback-quiz-5569b89fd5-cqfl8    Startup probe failed: HTTP probe failed with statuscode: 503
+0s          Normal    ScalingReplicaSet   deployment/feedback-quiz              Scaled down replica set feedback-quiz-df9ccd99d from 1 to 0
+0s          Normal    SuccessfulDelete    replicaset/feedback-quiz-df9ccd99d    Deleted pod: feedback-quiz-df9ccd99d-b2cws
+0s          Normal    Killing             pod/feedback-quiz-df9ccd99d-b2cws     Stopping container feedback-quiz
+0s          Warning   Unhealthy           pod/feedback-quiz-df9ccd99d-b2cws     Readiness probe failed: Get "http://10.244.0.7:8080/ready": dial tcp 10.244.0.7:8080: connect: connection refused
+56m         Normal    Pulled              pod/feedback-quiz-df9ccd99d-48w7r     Container image "localhost:5001/dima-feedback-quiz:v3" already present on machine
+56m         Normal    Created             pod/feedback-quiz-df9ccd99d-48w7r     Created container: feedback-quiz
+56m         Normal    Started             pod/feedback-quiz-df9ccd99d-48w7r     Started container feedback-quiz
+56m         Warning   Unhealthy           pod/feedback-quiz-df9ccd99d-48w7r     Startup probe failed: HTTP probe failed with statuscode: 503
+56m         Warning   Unhealthy           pod/feedback-quiz-df9ccd99d-48w7r     Liveness probe failed: HTTP probe failed with statuscode: 503
+56m         Normal    Killing             pod/feedback-quiz-df9ccd99d-48w7r     Container feedback-quiz failed liveness probe, will be restarted
+56m         Warning   Unhealthy           pod/feedback-quiz-df9ccd99d-48w7r     Readiness probe failed: HTTP probe failed with statuscode: 503
+dima@DESKTOP-A65H6VF:/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/f6f12dcae8ba22ea47d0a91f1369525a65610ae391c867c2b4a4c0ddab35897a$
+

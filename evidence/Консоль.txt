@@ -1,437 +1,1089 @@
-kubectl -n homework-2 describe pod feedback-quiz-df9ccd99d-48w7r
-Name:             feedback-quiz-df9ccd99d-48w7r
-Namespace:        homework-2
-Priority:         0
-Service Account:  default
-Node:             hosting-lab-control-plane/172.21.0.2
-Start Time:       Thu, 29 Oct 2026 23:13:58 +0500
-Labels:           app=feedback-quiz
-                  pod-template-hash=df9ccd99d
-Annotations:      <none>
-Status:           Running
-IP:               10.244.0.8
-IPs:
-  IP:           10.244.0.8
-Controlled By:  ReplicaSet/feedback-quiz-df9ccd99d
-Containers:
-  feedback-quiz:
-    Container ID:   containerd://317136f1b51471544f6d2bffcd4f9a4ec58f647b2342b3d208c800b10e76ef0b
-    Image:          localhost:5001/dima-feedback-quiz:v3
-    Image ID:       sha256:3e9189c736111e140608344654ade980bd5d551b0298fb8c833edb218d116552
-    Port:           8080/TCP (http)
-    Host Port:      0/TCP (http)
-    State:          Running
-      Started:      Fri, 30 Oct 2026 12:07:23 +0500
-    Last State:     Terminated
-      Reason:       Completed
-      Exit Code:    0
-      Started:      Fri, 30 Oct 2026 12:06:37 +0500
-      Finished:     Fri, 30 Oct 2026 12:07:22 +0500
-    Ready:          True
-    Restart Count:  2
-    Limits:
-      cpu:                500m
-      ephemeral-storage:  1Gi
-      memory:             512Mi
-    Requests:
-      cpu:                100m
-      ephemeral-storage:  256Mi
-      memory:             128Mi
-    Liveness:             http-get http://:http/live delay=0s timeout=2s period=3s successThreshold=1 failureThreshold=2
-    Readiness:            http-get http://:http/ready delay=0s timeout=2s period=2s successThreshold=1 failureThreshold=1
-    Startup:              http-get http://:http/live delay=0s timeout=1s period=2s successThreshold=1 failureThreshold=15
-    Environment Variables from:
-      feedback-quiz-config  ConfigMap  Optional: false
-      feedback-quiz-secret  Secret     Optional: false
-    Environment:
-      POD_NAME:  feedback-quiz-df9ccd99d-48w7r (v1:metadata.name)
-    Mounts:
-      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-knbrx (ro)
-Conditions:
-  Type                        Status
-  PodReadyToStartContainers   True
-  Initialized                 True
-  Ready                       True
-  ContainersReady             True
-  PodScheduled                True
-Volumes:
-  kube-api-access-knbrx:
-    Type:                    Projected (a volume that contains injected data from multiple sources)
-    TokenExpirationSeconds:  3607
-    ConfigMapName:           kube-root-ca.crt
-    Optional:                false
-    DownwardAPI:             true
-QoS Class:                   Burstable
-Node-Selectors:              <none>
-Tolerations:                 node.kubernetes.io/not-ready:NoExecute op=Exists for 300s
-                             node.kubernetes.io/unreachable:NoExecute op=Exists for 300s
-Events:
-  Type     Reason     Age                   From     Message
-  ----     ------     ----                  ----     -------
-  Warning  Unhealthy  2m47s                 kubelet  spec.containers{feedback-quiz}: Readiness probe failed: Get "http://10.244.0.8:8080/ready": dial tcp 10.244.0.8:8080: connect: connection refused
-  Warning  Unhealthy  2m3s (x4 over 2m49s)  kubelet  spec.containers{feedback-quiz}: Liveness probe failed: HTTP probe failed with statuscode: 503
-  Normal   Killing    2m3s (x2 over 2m48s)  kubelet  spec.containers{feedback-quiz}: Container feedback-quiz failed liveness probe, will be restarted
-  Normal   Pulled     2m2s (x3 over 12h)    kubelet  spec.containers{feedback-quiz}: Container image "localhost:5001/dima-feedback-quiz:v3" already present on machine
-  Normal   Created    2m2s (x3 over 12h)    kubelet  spec.containers{feedback-quiz}: Created container: feedback-quiz
-  Normal   Started    2m2s (x3 over 12h)    kubelet  spec.containers{feedback-quiz}: Started container feedback-quiz
-  Warning  Unhealthy  112s (x19 over 12h)   kubelet  spec.containers{feedback-quiz}: Startup probe failed: HTTP probe failed with statuscode: 503
-dima@DESKTOP-A65H6VF:/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/f6f12dcae8ba22ea47d0a91f1369525a65610ae391c867c2b4a4c0ddab35897a$ kubectl -n homework-2 logs feedback-quiz-df9ccd99d-48w7r  --previous
-
-[07:06:38 WRN] Overriding HTTP_PORTS '8080' and HTTPS_PORTS ''. Binding to values defined by URLS instead 'http://0.0.0.0:8080'.
-[07:06:38 INF] Now listening on: http://0.0.0.0:8080
-[07:06:38 INF] Application started. Press Ctrl+C to shut down.
-[07:06:38 INF] Hosting environment: Production
-[07:06:38 INF] Content root path: /app
-[07:07:22 INF] Application is shutting down...
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-2 эксперимент:
-
-
-
-HTTP/1.1 200 OK
-Content-Type: application/json; charset=utf-8
-Date: Fri, 30 Oct 2026 07:45:02 GMT
-Server: Kestrel
-Transfer-Encoding: chunked
-
-{"message":"Feedback quiz configuration was changed","author":"Dima","tokenConfigured":true,"podName":"feedback-quiz-df9ccd99d-48w7r"}dima@DESKTOP-A65H6VF:/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/f6f12dcacurl -i http://localhost:8082/livec867c2b4a4c0ddab35897a$ curl -i http://localhost:8082/live
-HTTP/1.1 200 OK
-Content-Length: 0
-Date: Fri, 30 Oct 2026 07:45:14 GMT
-Server: Kestrel
-
-dima@DESKTOP-A65H6VF:/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/f6f12dcae8ba22ea47d0a91f1369525a65610ae391c867c2b4a4c0ddab35897a$ curl -i http://localhost:8082/ready
-HTTP/1.1 200 OK
-Content-Length: 0
-Date: Fri, 30 Oct 2026 07:45:24 GMT
-Server: Kestrel
-
-dima@DESKTOP-A65H6VF:/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/f6f12dcae8ba22ea47d0a91f1369525a65610ae391c867c2b4a4c0ddab35897a$ kubectl -n homework-2 get endpointslices \
-  -l kubernetes.io/service-name=feedback-quiz -o wide
-NAME                  ADDRESSTYPE   PORTS   ENDPOINTS                          AGE
-feedback-quiz-v47k6   IPv4          8080    10.244.0.9,10.244.0.7,10.244.0.8   13h
-dima@DESKTOP-A65H6VF:/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/f6f12dcae8ba22ea47d0a91f1369525a65610ae391c867c2b4a4c0ddab35897a$ date -u
-Fri Oct 30 07:48:26 UTC 2026
-dima@DESKTOP-A65H6VF:/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/f6f12dcae8ba22ea47d0a91f1369525a65610ae391c867c2b4a4c0ddab35897a$ curl -i http://localhost:8082/not-ready
-HTTP/1.1 200 OK
-Content-Length: 0
-Date: Fri, 30 Oct 2026 07:48:35 GMT
-Server: Kestrel
-
-dima@DESKTOP-A65H6VF:/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/f6f12dcae8ba22ea47d0a91f1369525a65610ae391c867c2b4a4c0ddab35897a$ curl -i http://localhost:8082/ready
-HTTP/1.1 503 Service Unavailable
-Content-Type: application/problem+json; charset=utf-8
-Date: Fri, 30 Oct 2026 07:48:41 GMT
-Server: Kestrel
-Transfer-Encoding: chunked
-
-{"type":"https://tools.ietf.org/html/rfc9110#section-15.6.4","title":"Service Unavailable","status":503,"traceId":"00-e0c90c75813279f27059bc525c79193d-c7e4db09e6bec68f-00"}dima@DESKTOP-A65H6VF:/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/f6f12dcae8ba22ea47d0a91f1369525a65610ae391c867curl -i http://localhost:8082/readylocalhost:8082/ready
-HTTP/1.1 503 Service Unavailable
-Content-Type: application/problem+json; charset=utf-8
-Date: Fri, 30 Oct 2026 07:48:48 GMT
-Server: Kestrel
-Transfer-Encoding: chunked
-
-{"type":"https://tools.ietf.org/html/rfc9110#section-15.6.4","title":"Service Unavailable","status":503,"traceId":"00-8d6f50452be7556477b9b907b3cb0a83-7736909073c02491-00"}dima@DESKTOP-A65H6VF:/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/f6f12dcae8ba22ea47d0a91f1369525a65610ae391c867curl -i http://localhost:8082/live/localhost:8082/live
-HTTP/1.1 200 OK
-Content-Length: 0
-Date: Fri, 30 Oct 2026 07:48:54 GMT
-Server: Kestrel
-
-dima@DESKTOP-A65H6VF:/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/f6f12dcae8ba22ea47d0a91f1369525a65610ae391c867c2b4a4c0ddab35897a$ curl -i http://localhost:8082/
-
-HTTP/1.1 200 OK
-Content-Type: application/json; charset=utf-8
-Date: Fri, 30 Oct 2026 07:49:07 GMT
-Server: Kestrel
-Transfer-Encoding: chunked
-
-{"message":"Feedback quiz configuration was changed","author":"Dima","tokenConfigured":true,"podName":"feedback-quiz-df9ccd99d-48w7r"}dima@DESKTOP-A65H6VF:/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/f6f12dcae8ba22ea47d0a91f13695curl -i http://localhost:8082/ready$ curl -i http://localhost:8082/ready
-HTTP/1.1 503 Service Unavailable
-Content-Type: application/problem+json; charset=utf-8
-Date: Fri, 30 Oct 2026 07:51:18 GMT
-Server: Kestrel
-Transfer-Encoding: chunked
-
-{"type":"https://tools.ietf.org/html/rfc9110#section-15.6.4","title":"Service Unavailable","status":503,"traceId":"00-ebd74c661dd839852879591a789b734d-2f3038edd889e53c-00"}dima@DESKTOP-A65H6VF:/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/f6f12dcae8ba22ea47d0a91f1369525a65610ae391c867c2b4a4c0ddab35897a$ curl -i http://localhost:8082/ready-again
-HTTP/1.1 200 OK
-Content-Length: 0
-Date: Fri, 30 Oct 2026 07:52:41 GMT
-Server: Kestrel
-
-dima@DESKTOP-A65H6VF:/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/f6f12dcae8ba22ea47d0a91f1369525a65610ae391c867c2b4a4c0ddab35897a$ curl -i http://localhost:8082/ready
-HTTP/1.1 200 OK
-Content-Length: 0
-Date: Fri, 30 Oct 2026 07:52:48 GMT
-Server: Kestrel
-
-dima@DESKTOP-A65H6VF:/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/f6f12dcae8ba22ea47d0a91f1369525a65610ae391c867c2b4a4c0ddab35897a$ kubectl apply -f .\k8s\deployment.yaml
-error: the path ".k8sdeployment.yaml" does not exist
-dima@DESKTOP-A65H6VF:/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/f6f12dcae8ba22ea47d0a91f1369525a65610ae391c867c2b4a4c0ddab35897a$ kubectl -n homework-2 get deployment <имя-Deployment> -o wide
--bash: имя-Deployment: No such file or directory
-dima@DESKTOP-A65H6VF:/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/f6f12dcae8ba22ea47d0a91f1369525a65610ae391c867c2b4a4c0ddab35897a$ kubectl -n homework-2 get deployment <имя-Deployment>^Co wide
-dima@DESKTOP-A65H6VF:/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/f6f12dcae8ba22ea47d0a91f1369525a65610ae391c867c2b4a4c0ddab35897a$
-dima@DESKTOP-A65H6VF:/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/f6f12dcae8ba22ea47d0a91f1369525a65610ae391c867c2b4a4c0ddab35897a$
-dima@DESKTOP-A65H6VF:/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/f6f12dcae8ba22ea47d0a91f1369525a65610ae391c867c2b4a4c0ddab35897a$
-dima@DESKTOP-A65H6VF:/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/f6f12dcae8ba22ea47d0a91f1369525a65610ae391c867c2b4a4c0ddab35897a$
-dima@DESKTOP-A65H6VF:/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/f6f12dcae8ba22ea47d0a91f1369525a65610ae391c867c2b4a4c0ddab35897a$
-dima@DESKTOP-A65H6VF:/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/f6f12dcae8ba22ea47d0a91f1369525a65610ae391c867c2b4a4c0ddab35897a$
-dima@DESKTOP-A65H6VF:/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/f6f12dcae8ba22ea47d0a91f1369525a65610ae391c867c2b4a4c0ddab35897a$
-dima@DESKTOP-A65H6VF:/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/f6f12dcae8ba22ea47d0a91f1369525a65610ae391c867c2b4a4c0ddab35897a$
-dima@DESKTOP-A65H6VF:/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/f6f12dcae8ba22ea47d0a91f1369525a65610ae391c867c2b4a4c0ddab35897a$
-dima@DESKTOP-A65H6VF:/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/f6f12dcae8ba22ea47d0a91f1369525a65610ae391c867c2b4a4c0ddab35897a$
-dima@DESKTOP-A65H6VF:/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/f6f12dcae8ba22ea47d0a91f1369525a65610ae391c867c2b4a4c0ddab35897a$
-dima@DESKTOP-A65H6VF:/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/f6f12dcae8ba22ea47d0a91f1369525a65610ae391c867c2b4a4c0ddab35897a$
-dima@DESKTOP-A65H6VF:/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/f6f12dcae8ba22ea47d0a91f1369525a65610ae391c867c2b4a4c0ddab35897a$
-dima@DESKTOP-A65H6VF:/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/f6f12dcae8ba22ea47d0a91f1369525a65610ae391c867c2b4a4c0ddab35897a$
-dima@DESKTOP-A65H6VF:/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/f6f12dcae8ba22ea47d0a91f1369525a65610ae391c867c2b4a4c0ddab35897a$
-dima@DESKTOP-A65H6VF:/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/f6f12dcae8ba22ea47d0a91f1369525a65610ae391c867c2b4a4c0ddab35897a$
-dima@DESKTOP-A65H6VF:/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/f6f12dcae8ba22ea47d0a91f1369525a65610ae391c867c2b4a4c0ddab35897a$ kubectl -n homework-2 get deployment feedback-quiz -w
-NAME            READY   UP-TO-DATE   AVAILABLE   AGE
-feedback-quiz   3/3     3            3           14h
-^Cdima@DESKTOP-A65H6VF:/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/f6f12dcae8ba22ea47d0a91f1369525a65610ae391c867c2b4a4c0ddab35897a$ kubectl -n homework-2 get rs -l app=feedback-quiz
-NAME                      DESIRED   CURRENT   READY   AGE
-feedback-quiz-df9ccd99d   3         3         3       14h
-dima@DESKTOP-A65H6VF:/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/f6f12dcae8ba22ea47d0a91f1369525a65610ae391c867c2b4a4c0ddab35897a$ docker build -t localhost:5001/dima-feedback-quiz:v4 ./_Src/GFeed.WebApiApp
-[+] Building 29.8s (16/16) FINISHED                          docker:default
- => [internal] load build definition from Dockerfile                   0.1s
- => => transferring dockerfile: 606B                                   0.0s
- => [internal] load metadata for mcr.microsoft.com/dotnet/aspnet:10.0  1.0s
- => [internal] load metadata for mcr.microsoft.com/dotnet/sdk:10.0     1.0s
- => [internal] load .dockerignore                                      0.1s
- => => transferring context: 380B                                      0.0s
- => [publish 1/6] FROM mcr.microsoft.com/dotnet/sdk:10.0@sha256:de4fe  0.0s
- => [internal] load build context                                      0.1s
- => => transferring context: 7.92kB                                    0.1s
- => [base 1/2] FROM mcr.microsoft.com/dotnet/aspnet:10.0@sha256:de0ee  0.0s
- => CACHED [publish 2/6] WORKDIR /src                                  0.0s
- => [publish 3/6] COPY [GFeed.WebApiApp.csproj, ./]                    0.1s
- => [publish 4/6] RUN dotnet restore "GFeed.WebApiApp.csproj"         22.5s
- => [publish 5/6] COPY . .                                             0.0s
- => [publish 6/6] RUN dotnet publish "GFeed.WebApiApp.csproj" -c Rele  5.6s
- => CACHED [base 2/2] WORKDIR /app                                     0.0s
- => CACHED [final 1/2] WORKDIR /app                                    0.0s
- => [final 2/2] COPY --from=publish /app/publish .                     0.1s
- => exporting to image                                                 0.1s
- => => exporting layers                                                0.0s
- => => writing image sha256:e6f7fd7373739e796f789b8f41b9e8e557ef0c096  0.0s
- => => naming to localhost:5001/dima-feedback-quiz:v4                  0.0s
-dima@DESKTOP-A65H6VF:/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/f6f12dcae8ba22ea47d0a91f1369525a65610ae391c867c2b4a4c0ddab35897a$ docker push localhost:5001/dima-feedback-quiz:v4
-The push refers to repository [localhost:5001/dima-feedback-quiz]
-6270606ba1b5: Pushed
-5f70bf18a086: Layer already exists
-d9167c7aa611: Layer already exists
-eaa51743b39d: Layer already exists
-361fe91f35cc: Layer already exists
-2c16277b36ff: Layer already exists
-7be251a39e9c: Layer already exists
-fa09e76fa81b: Layer already exists
-bec87777bc2f: Layer already exists
-v4: digest: sha256:5c53b2f507a314e93174b25f6ec504c2a047c8f1dbaac5286801595564e97704 size: 2203
-dima@DESKTOP-A65H6VF:/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/f6f12dcae8ba22ea47d0a91f1369525a65610ae391c867c2b4a4c0ddab35897a$ kind load docker-image localhost:5001/dima-feedback-quiz:v4 --name hosting-lab
-Image: "localhost:5001/dima-feedback-quiz:v4" with ID "sha256:e6f7fd7373739e796f789b8f41b9e8e557ef0c0964e8e0cf68f99aad9e621da0" not yet present on node "hosting-lab-control-plane", loading...
-dima@DESKTOP-A65H6VF:/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/f6f12dcae8ba22ea47d0a91f1369525a65610ae391c867c2b4a4c0ddab35897a$ date -u
-Fri Oct 30 08:19:37 UTC 2026
-dima@DESKTOP-A65H6VF:/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/f6f12dcae8ba22ea47d0a91f1369525a65610ae391c867c2b4a4c0ddab35897a$ kubectl apply -f deployment.yaml
-error: the path "deployment.yaml" does not exist
-dima@DESKTOP-A65H6VF:/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/f6f12dcae8ba22ea47d0a91f1369525a65610ae391c867c2b4a4c0ddab35897a$ kubectl -n homework-2 set image deployment/feedback-quiz \
-  feedback-quiz=localhost:5001/dima-feedback-quiz:v4
-deployment.apps/feedback-quiz image updated
-dima@DESKTOP-A65H6VF:/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/f6f12dcae8ba22ea47d0a91f1369525a65610ae391c867c2b4a4c0ddab35897a$ kubectl -n homework-2 rollout history deployment/feedback-quiz
-deployment.apps/feedback-quiz
-REVISION  CHANGE-CAUSE
-1         <none>
-2         <none>
-
-dima@DESKTOP-A65H6VF:/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/f6f12dcae8ba22ea47d0a91f1369525a65610ae391c867c2b4a4c0ddab35897a$ kubectl -n homework-2 get pods -l app=feedback-quiz -o wide
-NAME                             READY   STATUS    RESTARTS   AGE    IP            NODE                        NOMINATED NODE   READINESS GATES
-feedback-quiz-5569b89fd5-74s4t   1/1     Running   0          119s   10.244.0.13   hosting-lab-control-plane   <none>           <none>
-feedback-quiz-5569b89fd5-cqfl8   1/1     Running   0          78s    10.244.0.15   hosting-lab-control-plane   <none>           <none>
-feedback-quiz-5569b89fd5-hpjlk   1/1     Running   0          100s   10.244.0.14   hosting-lab-control-plane   <none>           <none>
-dima@DESKTOP-A65H6VF:/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/f6f12dcae8ba22ea47d0a91f1369525a65610ae391c867c2b4a4c0ddab35897a$ kubectl -n homework-2 get replicasets -l app=feedback-quiz
-NAME                       DESIRED   CURRENT   READY   AGE
-feedback-quiz-5569b89fd5   3         3         3       2m7s
-feedback-quiz-df9ccd99d    0         0         0       14h
-dima@DESKTOP-A65H6VF:/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/f6f12dcae8ba22ea47d0a91f1369525a65610ae391c867c2b4a4c0ddab35897a$ kubectl -n homework-2 rollout status deployment/feedback-quiz --timeout=180s
-deployment "feedback-quiz" successfully rolled out
-dima@DESKTOP-A65H6VF:/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/f6f12dcae8ba22ea47d0a91f1369525a65610ae391c867c2b4a4c0ddab35897a$
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-другой терминал с логами и порт-форвадинг:
-dima@DESKTOP-A65H6VF:/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/f6f12dcae8ba22ea47d0a91f1369525a65610ae391c867c2b4a4c0ddab35897a$ kubectl -n homework-2 port-forward pod/feedback-quiz-df9ccd99d-48w7r 8082:8080
-Forwarding from 127.0.0.1:8082 -> 8080
-Forwarding from [::1]:8082 -> 8080
-date -u
-Handling connection for 8082
-curl -i http://localhost:8082/liveHandling connection for 8082
-Handling connection for 8082
-Handling connection for 8082
-Handling connection for 8082
-Handling connection for 8082
-Handling connection for 8082
-Handling connection for 8082
-Handling connection for 8082
-Handling connection for 8082
-Handling connection for 8082
-Handling connection for 8082
-Handling connection for 8082
-Handling connection for 8082
-Handling connection for 8082
-Handling connection for 8082
-^Cdima@DESKTOP-A65H6VF:/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/f6f12dcae8ba22ea47d0a91f1369525a65610ae391c867c2b4a4c0ddab35897a$ kubectl -n homework-2 port-forward pofeedback-quiz-df9ccd99d-48w7r7r 8082:8080
-Forwarding from 127.0.0.1:8082 -> 8080
-Forwarding from [::1]:8082 -> 8080
-Handling connection for 8082
-Handling connection for 8082
-Handling connection for 8082
-^Cdima@DESKTOP-A65H6VF:/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/f6f12dcae8ba22ea47d0a91f1369525a65610ae391c867c2b4a4c0ddab35897a$ kubectl -n homework-2 get events --sort-by=.lastTimestamp -w
-warning: --watch requested, --sort-by will be ignored for watch events received
-LAST SEEN   TYPE      REASON      OBJECT                              MESSAGE
-42m         Normal    Pulled      pod/feedback-quiz-df9ccd99d-48w7r   Container image "localhost:5001/dima-feedback-quiz:v3" already present on machine
-42m         Normal    Created     pod/feedback-quiz-df9ccd99d-48w7r   Created container: feedback-quiz
-42m         Normal    Started     pod/feedback-quiz-df9ccd99d-48w7r   Started container feedback-quiz
-42m         Warning   Unhealthy   pod/feedback-quiz-df9ccd99d-48w7r   Liveness probe failed: HTTP probe failed with statuscode: 503
-42m         Normal    Killing     pod/feedback-quiz-df9ccd99d-48w7r   Container feedback-quiz failed liveness probe, will be restarted
-42m         Warning   Unhealthy   pod/feedback-quiz-df9ccd99d-48w7r   Startup probe failed: HTTP probe failed with statuscode: 503
-27m         Warning   Unhealthy   pod/feedback-quiz-df9ccd99d-48w7r   Readiness probe failed: HTTP probe failed with statuscode: 503
-0s          Normal    ScalingReplicaSet   deployment/feedback-quiz            Scaled up replica set feedback-quiz-5569b89fd5 from 0 to 1
-0s          Normal    SuccessfulCreate    replicaset/feedback-quiz-5569b89fd5   Created pod: feedback-quiz-5569b89fd5-74s4t
-0s          Normal    Scheduled           pod/feedback-quiz-5569b89fd5-74s4t    Successfully assigned homework-2/feedback-quiz-5569b89fd5-74s4t to hosting-lab-control-plane
-0s          Normal    Pulled              pod/feedback-quiz-5569b89fd5-74s4t    Container image "localhost:5001/dima-feedback-quiz:v4" already present on machine
-0s          Normal    Created             pod/feedback-quiz-5569b89fd5-74s4t    Created container: feedback-quiz
-0s          Normal    Started             pod/feedback-quiz-5569b89fd5-74s4t    Started container feedback-quiz
-0s          Warning   Unhealthy           pod/feedback-quiz-5569b89fd5-74s4t    Startup probe failed: HTTP probe failed with statuscode: 503
-0s          Warning   Unhealthy           pod/feedback-quiz-5569b89fd5-74s4t    Startup probe failed: HTTP probe failed with statuscode: 503
-0s          Warning   Unhealthy           pod/feedback-quiz-5569b89fd5-74s4t    Startup probe failed: HTTP probe failed with statuscode: 503
-0s          Warning   Unhealthy           pod/feedback-quiz-5569b89fd5-74s4t    Startup probe failed: HTTP probe failed with statuscode: 503
-0s          Warning   Unhealthy           pod/feedback-quiz-5569b89fd5-74s4t    Startup probe failed: HTTP probe failed with statuscode: 503
-0s          Warning   Unhealthy           pod/feedback-quiz-5569b89fd5-74s4t    Startup probe failed: HTTP probe failed with statuscode: 503
-0s          Warning   Unhealthy           pod/feedback-quiz-5569b89fd5-74s4t    Startup probe failed: HTTP probe failed with statuscode: 503
-0s          Normal    ScalingReplicaSet   deployment/feedback-quiz              Scaled down replica set feedback-quiz-df9ccd99d from 3 to 2
-0s          Normal    ScalingReplicaSet   deployment/feedback-quiz              Scaled up replica set feedback-quiz-5569b89fd5 from 1 to 2
-0s          Normal    SuccessfulDelete    replicaset/feedback-quiz-df9ccd99d    Deleted pod: feedback-quiz-df9ccd99d-48w7r
-0s          Normal    Killing             pod/feedback-quiz-df9ccd99d-48w7r     Stopping container feedback-quiz
-0s          Normal    SuccessfulCreate    replicaset/feedback-quiz-5569b89fd5   Created pod: feedback-quiz-5569b89fd5-hpjlk
-0s          Normal    Scheduled           pod/feedback-quiz-5569b89fd5-hpjlk    Successfully assigned homework-2/feedback-quiz-5569b89fd5-hpjlk to hosting-lab-control-plane
-0s          Warning   Unhealthy           pod/feedback-quiz-df9ccd99d-48w7r     Readiness probe failed: Get "http://10.244.0.8:8080/ready": dial tcp 10.244.0.8:8080: connect: connection refused
-0s          Normal    Pulled              pod/feedback-quiz-5569b89fd5-hpjlk    Container image "localhost:5001/dima-feedback-quiz:v4" already present on machine
-0s          Normal    Created             pod/feedback-quiz-5569b89fd5-hpjlk    Created container: feedback-quiz
-0s          Normal    Started             pod/feedback-quiz-5569b89fd5-hpjlk    Started container feedback-quiz
-0s          Warning   Unhealthy           pod/feedback-quiz-5569b89fd5-hpjlk    Startup probe failed: HTTP probe failed with statuscode: 503
-0s          Warning   Unhealthy           pod/feedback-quiz-5569b89fd5-hpjlk    Startup probe failed: HTTP probe failed with statuscode: 503
-0s          Warning   Unhealthy           pod/feedback-quiz-5569b89fd5-hpjlk    Startup probe failed: HTTP probe failed with statuscode: 503
-0s          Warning   Unhealthy           pod/feedback-quiz-5569b89fd5-hpjlk    Startup probe failed: HTTP probe failed with statuscode: 503
-0s          Warning   Unhealthy           pod/feedback-quiz-5569b89fd5-hpjlk    Startup probe failed: HTTP probe failed with statuscode: 503
-0s          Warning   Unhealthy           pod/feedback-quiz-5569b89fd5-hpjlk    Startup probe failed: HTTP probe failed with statuscode: 503
-0s          Normal    ScalingReplicaSet   deployment/feedback-quiz              Scaled down replica set feedback-quiz-df9ccd99d from 2 to 1
-0s          Normal    SuccessfulDelete    replicaset/feedback-quiz-df9ccd99d    Deleted pod: feedback-quiz-df9ccd99d-4q6w7
-0s          Normal    Killing             pod/feedback-quiz-df9ccd99d-4q6w7     Stopping container feedback-quiz
-0s          Normal    ScalingReplicaSet   deployment/feedback-quiz              Scaled up replica set feedback-quiz-5569b89fd5 from 2 to 3
-0s          Normal    SuccessfulCreate    replicaset/feedback-quiz-5569b89fd5   Created pod: feedback-quiz-5569b89fd5-cqfl8
-0s          Normal    Scheduled           pod/feedback-quiz-5569b89fd5-cqfl8    Successfully assigned homework-2/feedback-quiz-5569b89fd5-cqfl8 to hosting-lab-control-plane
-0s          Normal    Pulled              pod/feedback-quiz-5569b89fd5-cqfl8    Container image "localhost:5001/dima-feedback-quiz:v4" already present on machine
-0s          Normal    Created             pod/feedback-quiz-5569b89fd5-cqfl8    Created container: feedback-quiz
-0s          Normal    Started             pod/feedback-quiz-5569b89fd5-cqfl8    Started container feedback-quiz
-0s          Warning   Unhealthy           pod/feedback-quiz-5569b89fd5-cqfl8    Startup probe failed: HTTP probe failed with statuscode: 503
-0s          Warning   Unhealthy           pod/feedback-quiz-5569b89fd5-cqfl8    Startup probe failed: HTTP probe failed with statuscode: 503
-0s          Warning   Unhealthy           pod/feedback-quiz-5569b89fd5-cqfl8    Startup probe failed: HTTP probe failed with statuscode: 503
-0s          Warning   Unhealthy           pod/feedback-quiz-5569b89fd5-cqfl8    Startup probe failed: HTTP probe failed with statuscode: 503
-0s          Warning   Unhealthy           pod/feedback-quiz-5569b89fd5-cqfl8    Startup probe failed: HTTP probe failed with statuscode: 503
-0s          Warning   Unhealthy           pod/feedback-quiz-5569b89fd5-cqfl8    Startup probe failed: HTTP probe failed with statuscode: 503
-0s          Normal    ScalingReplicaSet   deployment/feedback-quiz              Scaled down replica set feedback-quiz-df9ccd99d from 1 to 0
-0s          Normal    SuccessfulDelete    replicaset/feedback-quiz-df9ccd99d    Deleted pod: feedback-quiz-df9ccd99d-b2cws
-0s          Normal    Killing             pod/feedback-quiz-df9ccd99d-b2cws     Stopping container feedback-quiz
-0s          Warning   Unhealthy           pod/feedback-quiz-df9ccd99d-b2cws     Readiness probe failed: Get "http://10.244.0.7:8080/ready": dial tcp 10.244.0.7:8080: connect: connection refused
-56m         Normal    Pulled              pod/feedback-quiz-df9ccd99d-48w7r     Container image "localhost:5001/dima-feedback-quiz:v3" already present on machine
-56m         Normal    Created             pod/feedback-quiz-df9ccd99d-48w7r     Created container: feedback-quiz
-56m         Normal    Started             pod/feedback-quiz-df9ccd99d-48w7r     Started container feedback-quiz
-56m         Warning   Unhealthy           pod/feedback-quiz-df9ccd99d-48w7r     Startup probe failed: HTTP probe failed with statuscode: 503
-56m         Warning   Unhealthy           pod/feedback-quiz-df9ccd99d-48w7r     Liveness probe failed: HTTP probe failed with statuscode: 503
-56m         Normal    Killing             pod/feedback-quiz-df9ccd99d-48w7r     Container feedback-quiz failed liveness probe, will be restarted
-56m         Warning   Unhealthy           pod/feedback-quiz-df9ccd99d-48w7r     Readiness probe failed: HTTP probe failed with statuscode: 503
-dima@DESKTOP-A65H6VF:/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/f6f12dcae8ba22ea47d0a91f1369525a65610ae391c867c2b4a4c0ddab35897a$
-
+Windows PowerShell
+(C) Корпорация Майкрософт (Microsoft Corporation). Все права защищены.
+
+Установите последнюю версию PowerShell для новых функций и улучшения! https://aka.ms/PSWindows
+
+PS C:\Users\HOMELite> docker version
+Client:
+ Version:           27.4.0
+ API version:       1.47
+ Go version:        go1.22.10
+ Git commit:        bde2b89
+ Built:             Sat Dec  7 10:40:21 2024
+ OS/Arch:           windows/amd64
+ Context:           desktop-linux
+
+Server: Docker Desktop 4.37.1 (178610)
+ Engine:
+  Version:          27.4.0
+  API version:      1.47 (minimum version 1.24)
+  Go version:       go1.22.10
+  Git commit:       92a8393
+  Built:            Sat Dec  7 10:38:57 2024
+  OS/Arch:          linux/amd64
+  Experimental:     false
+ containerd:
+  Version:          1.7.21
+  GitCommit:        472731909fa34bd7bc9c087e4c27943f9835f111
+ runc:
+  Version:          1.1.13
+  GitCommit:        v1.1.13-0-g58aa920
+ docker-init:
+  Version:          0.19.0
+  GitCommit:        de40ad0
+PS C:\Users\HOMELite> wsl
+wsl: Конфигурация прокси-сервера localhost обнаружена, но не отражена в WSL. WSL в режиме NAT не поддерживает прокси-серверы localhost.
+dima@DESKTOP-A65H6VF:/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/2  $ docker info
+Client:
+ Version:    27.4.0
+ Context:    default
+ Debug Mode: false
+ Plugins:
+  ai: Ask Gordon - Docker Agent (Docker Inc.)
+    Version:  v0.5.1
+    Path:     /usr/local/lib/docker/cli-plugins/docker-ai
+  buildx: Docker Buildx (Docker Inc.)
+    Version:  v0.19.2-desktop.1
+    Path:     /usr/local/lib/docker/cli-plugins/docker-buildx
+  compose: Docker Compose (Docker Inc.)
+    Version:  v2.31.0-desktop.2
+    Path:     /usr/local/lib/docker/cli-plugins/docker-compose
+  debug: Get a shell into any image or container (Docker Inc.)
+    Version:  0.0.37
+    Path:     /usr/local/lib/docker/cli-plugins/docker-debug
+  desktop: Docker Desktop commands (Beta) (Docker Inc.)
+    Version:  v0.1.0
+    Path:     /usr/local/lib/docker/cli-plugins/docker-desktop
+  dev: Docker Dev Environments (Docker Inc.)
+    Version:  v0.1.2
+    Path:     /usr/local/lib/docker/cli-plugins/docker-dev
+  extension: Manages Docker extensions (Docker Inc.)
+    Version:  v0.2.27
+    Path:     /usr/local/lib/docker/cli-plugins/docker-extension
+  feedback: Provide feedback, right in your terminal! (Docker Inc.)
+    Version:  v1.0.5
+    Path:     /usr/local/lib/docker/cli-plugins/docker-feedback
+  init: Creates Docker-related starter files for your project (Docker Inc.)
+    Version:  v1.4.0
+    Path:     /usr/local/lib/docker/cli-plugins/docker-init
+  sbom: View the packaged-based Software Bill Of Materials (SBOM) for an image (Anchore Inc.)
+    Version:  0.6.0
+    Path:     /usr/local/lib/docker/cli-plugins/docker-sbom
+  scout: Docker Scout (Docker Inc.)
+    Version:  v1.15.1
+    Path:     /usr/local/lib/docker/cli-plugins/docker-scout
+
+Server:
+ Containers: 26
+  Running: 15
+  Paused: 0
+  Stopped: 11
+ Images: 77
+ Server Version: 27.4.0
+ Storage Driver: overlay2
+  Backing Filesystem: extfs
+  Supports d_type: true
+  Using metacopy: false
+  Native Overlay Diff: true
+  userxattr: false
+ Logging Driver: json-file
+ Cgroup Driver: cgroupfs
+ Cgroup Version: 1
+ Plugins:
+  Volume: local
+  Network: bridge host ipvlan macvlan null overlay
+  Log: awslogs fluentd gcplogs gelf journald json-file local splunk syslog
+ CDI spec directories:
+  /etc/cdi
+  /var/run/cdi
+ Swarm: inactive
+ Runtimes: io.containerd.runc.v2 nvidia runc
+ Default Runtime: runc
+ Init Binary: docker-init
+ containerd version: 472731909fa34bd7bc9c087e4c27943f9835f111
+ runc version: v1.1.13-0-g58aa920
+ init version: de40ad0
+ Security Options:
+  seccomp
+   Profile: unconfined
+ Kernel Version: 5.15.167.4-microsoft-standard-WSL2
+ Operating System: Docker Desktop
+ OSType: linux
+ Architecture: x86_64
+ CPUs: 8
+ Total Memory: 3.828GiB
+ Name: docker-desktop
+ ID: f4367e72-f458-43ff-9b26-6b08717770c8
+ Docker Root Dir: /var/lib/docker
+ Debug Mode: false
+ HTTP Proxy: http.docker.internal:3128
+ HTTPS Proxy: http.docker.internal:3128
+ No Proxy: hubproxy.docker.internal
+ Labels:
+  com.docker.desktop.address=unix:///var/run/docker-cli.sock
+ Experimental: false
+ Insecure Registries:
+  hubproxy.docker.internal:5555
+  127.0.0.0/8
+ Live Restore Enabled: false
+
+WARNING: No blkio throttle.read_bps_device support
+WARNING: No blkio throttle.write_bps_device support
+WARNING: No blkio throttle.read_iops_device support
+WARNING: No blkio throttle.write_iops_device support
+WARNING: daemon is not using the default seccomp profile
+dima@DESKTOP-A65H6VF:/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/2  $ kind version
+kind v0.27.0 go1.23.6 linux/amd64
+dima@DESKTOP-A65H6VF:/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/2  $ kubectl version --client
+Client Version: v1.37.1
+Kustomize Version: v5.8.1
+dima@DESKTOP-A65H6VF:/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/2  $ git --version
+git version 2.43.0
+dima@DESKTOP-A65H6VF:/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/2  $ docker run --rm hello-world
+
+
+Hello from Docker!
+This message shows that your installation appears to be working correctly.
+
+To generate this message, Docker took the following steps:
+ 1. The Docker client contacted the Docker daemon.
+ 2. The Docker daemon pulled the "hello-world" image from the Docker Hub.
+    (amd64)
+ 3. The Docker daemon created a new container from that image which runs the
+    executable that produces the output you are currently reading.
+ 4. The Docker daemon streamed that output to the Docker client, which sent it
+    to your terminal.
+
+To try something more ambitious, you can run an Ubuntu container with:
+ $ docker run -it ubuntu bash
+
+Share images, automate workflows, and more with a free Docker ID:
+ https://hub.docker.com/
+
+For more examples and ideas, visit:
+ https://docs.docker.com/get-started/
+
+dima@DESKTOP-A65H6VF:/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/2  $ kind get clusters
+docker ps -a --format 'table {{.Names}}\t{{.Status}}\t{{.Ports}}'
+hosting-lab
+NAMES                                                                                      STATUS                          PORTS
+tasktracker-grafana-1                                                                      Exited (255) 42 minutes ago     0.0.0.0:3000->3000/tcp
+tasktracker-worker-1                                                                       Exited (255) 42 minutes ago     8080/tcp
+tasktracker-notifications-1                                                                Exited (255) 42 minutes ago     0.0.0.0:8081->8080/tcp
+tasktracker-api-1                                                                          Exited (255) 42 minutes ago     0.0.0.0:8080->8080/tcp
+tasktracker-prometheus-1                                                                   Exited (255) 42 minutes ago     0.0.0.0:9090->9090/tcp
+tasktracker-postgres-1                                                                     Exited (0) About a minute ago
+tasktracker-rabbitmq-1                                                                     Exited (0) About a minute ago
+tasktracker-jaeger-1                                                                       Exited (255) 42 minutes ago     4318/tcp, 5778-5779/tcp, 9411/tcp, 13132-13133/tcp, 14250/tcp, 0.0.0.0:4317->4317/tcp, 0.0.0.0:16686->16686/tcp, 14268/tcp
+cc_tasktracker_ba4784-claude-code-1                                                        Exited (255) 42 minutes ago     0.0.0.0:1455->1455/tcp, 0.0.0.0:55320->55320/tcp
+cc_f74_c485c2-claude-code-1                                                                Exited (255) 2 days ago         0.0.0.0:1455->1455/tcp, 0.0.0.0:55320->55320/tcp
+cc_homelite_72cf63-claude-code-1                                                           Created                      
+cc_2c96dca07abf9b80a135d8312ae773778d000875d847164870004528acb9a964_b4dac1-claude-code-1   Exited (137) 5 days ago      
+hosting-lab-control-plane                                                                  Up 41 minutes                   127.0.0.1:39535->6443/tcp
+cc_e80d625ccbe1835525cc5edd41c8b3ad0fd87bcd60251906c709528a37a026fa_61fa24-claude-code-1   Exited (137) 13 days ago     
+mongodb                                                                                    Exited (137) 2 weeks ago     
+hosting-lab-registry                                                                       Up 41 minutes                   127.0.0.1:5001->5000/tcp
+first-app-1                                                                                Exited (0) 3 weeks ago       
+first-nginx-1                                                                              Exited (0) 3 weeks ago       
+first-db-1                                                                                 Exited (0) 3 weeks ago       
+first-cache-1                                                                              Exited (0) 3 weeks ago       
+llm-agent-f-langfuse-web-1                                                                 Up 4 seconds                    0.0.0.0:3000->3000/tcp
+llm-agent-f-langfuse-worker-1                                                              Up 41 minutes                   127.0.0.1:3030->3030/tcp
+llm-agent-f-clickhouse-1                                                                   Up 41 minutes (healthy)         127.0.0.1:8123->8123/tcp, 127.0.0.1:9000->9000/tcp, 9009/tcp
+llm-agent-f-redis-1                                                                        Up 41 minutes (healthy)         127.0.0.1:6379->6379/tcp
+llm-agent-f-minio-1                                                                        Up 41 minutes (healthy)         0.0.0.0:9090->9000/tcp, 127.0.0.1:9091->9001/tcp
+llm-agent-f-postgres-1                                                                     Exited (128) 2 days ago      
+dima@DESKTOP-A65H6VF:/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/2  $ kubectl --context kind-hosting-lab get nodes -o wide
+NAME                        STATUS   ROLES           AGE   VERSION   INTERNAL-IP   EXTERNAL-IP   OS-IMAGE                         KERNEL-VERSION                       CONTAINER-RUNTIME
+hosting-lab-control-plane   Ready    control-plane   13d   v1.32.2   172.21.0.2    <none>        Debian GNU/Linux 12 (bookworm)   5.15.167.4-microsoft-standard-WSL2   containerd://2.0.2
+dima@DESKTOP-A65H6VF:/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/2  $ kubectl --context kind-hosting-lab get pods -A
+
+NAMESPACE            NAME                                                READY   STATUS    RESTARTS      AGE
+homework-1           feedback-quiz-6987cd444c-d8b4d                      1/1     Running   3 (43m ago)   13d
+homework-1           feedback-quiz-6987cd444c-z4r22                      1/1     Running   3 (43m ago)   13d
+homework-2           feedback-client-57b869f5cf-gn2rb                    1/1     Running   2 (43m ago)   6d7h
+homework-2           feedback-quiz-5569b89fd5-74s4t                      1/1     Running   2 (43m ago)   6d8h
+homework-2           feedback-quiz-5569b89fd5-cqfl8                      1/1     Running   2 (43m ago)   6d8h
+homework-2           feedback-quiz-5569b89fd5-hpjlk                      1/1     Running   2 (43m ago)   6d8h
+ingress-system       traefik-5f85b979cb-grgjw                            1/1     Running   2 (43m ago)   6d7h
+kube-system          coredns-668d6bf9bc-xp2jv                            1/1     Running   3 (43m ago)   13d
+kube-system          coredns-668d6bf9bc-xxlzw                            1/1     Running   3 (43m ago)   13d
+kube-system          etcd-hosting-lab-control-plane                      1/1     Running   2 (43m ago)   6d22h
+kube-system          kindnet-759l2                                       1/1     Running   3 (43m ago)   13d
+kube-system          kube-apiserver-hosting-lab-control-plane            1/1     Running   2 (43m ago)   6d22h
+kube-system          kube-controller-manager-hosting-lab-control-plane   1/1     Running   4 (43m ago)   13d
+kube-system          kube-proxy-bb8jf                                    1/1     Running   3 (43m ago)   13d
+kube-system          kube-scheduler-hosting-lab-control-plane            1/1     Running   4 (43m ago)   13d
+local-path-storage   local-path-provisioner-7dc846544d-p9qt7             1/1     Running   6 (42m ago)   13d
+dima@DESKTOP-A65H6VF:/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/2  $ kubectl --context kind-hosting-lab get pods -A
+NAMESPACE            NAME                                                READY   STATUS    RESTARTS      AGE
+ingress-system       traefik-5f85b979cb-grgjw                            1/1     Running   2 (49m ago)   6d7h
+kube-system          coredns-668d6bf9bc-xp2jv                            1/1     Running   3 (49m ago)   13d
+kube-system          coredns-668d6bf9bc-xxlzw                            1/1     Running   3 (49m ago)   13d
+kube-system          etcd-hosting-lab-control-plane                      1/1     Running   2 (49m ago)   6d22h
+kube-system          kindnet-759l2                                       1/1     Running   3 (49m ago)   13d
+kube-system          kube-apiserver-hosting-lab-control-plane            1/1     Running   2 (49m ago)   6d22h
+kube-system          kube-controller-manager-hosting-lab-control-plane   1/1     Running   4 (49m ago)   13d
+kube-system          kube-proxy-bb8jf                                    1/1     Running   3 (49m ago)   13d
+kube-system          kube-scheduler-hosting-lab-control-plane            1/1     Running   4 (49m ago)   13d
+local-path-storage   local-path-provisioner-7dc846544d-p9qt7             1/1     Running   6 (49m ago)   13d
+dima@DESKTOP-A65H6VF:/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/2  $
+dima@DESKTOP-A65H6VF:/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/2  $
+dima@DESKTOP-A65H6VF:/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/2  $
+dima@DESKTOP-A65H6VF:/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/2  $
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+dima@DESKTOP-A65H6VF:/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/2  $ kubectl --context kind-hosting-lab delete namespace homework-1 homework-2
+namespace "homework-1" deleted
+namespace "homework-2" deleted
+dima@DESKTOP-A65H6VF:/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/2  $ kubectl --context kind-hosting-lab get nodes -o wide
+NAME                        STATUS   ROLES           AGE   VERSION   INTERNAL-IP   EXTERNAL-IP   OS-IMAGE                         KERNEL-VERSION                       CONTAINER-RUNTIME
+hosting-lab-control-plane   Ready    control-plane   13d   v1.32.2   172.21.0.2    <none>        Debian GNU/Linux 12 (bookworm)   5.15.167.4-microsoft-standard-WSL2   containerd://2.0.2
+dima@DESKTOP-A65H6VF:/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/2  $ kubectl --context kind-hosting-lab get ns
+NAME                 STATUS   AGE
+default              Active   13d
+ingress-system       Active   6d7h
+kube-node-lease      Active   13d
+kube-public          Active   13d
+kube-system          Active   13d
+local-path-storage   Active   13d
+dima@DESKTOP-A65H6VF:/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/2  $
+dima@DESKTOP-A65H6VF:/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/2  $
+dima@DESKTOP-A65H6VF:/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/2  $
+dima@DESKTOP-A65H6VF:/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/2  $
+dima@DESKTOP-A65H6VF:/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/2  $
+dima@DESKTOP-A65H6VF:/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/2  $
+dima@DESKTOP-A65H6VF:/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/2  $
+dima@DESKTOP-A65H6VF:/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/2  $
+dima@DESKTOP-A65H6VF:/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/2  $
+dima@DESKTOP-A65H6VF:/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/2  $ docker pull gitlab/gitlab-ce:latest
+latest: Pulling from gitlab/gitlab-ce
+7a48b8f0e5c7: Already exists
+0a80e9fccedc: Pull complete
+f2ab31058fce: Pull complete
+02f5de298f22: Pull complete
+cf87c5e93692: Pull complete
+4586e6f49a24: Pull complete
+78a0f6d3f47a: Pull complete
+bed3b6ede8e0: Pull complete
+987a10a54774: Pull complete
+Digest: sha256:6863d156a1a477bd6f69fc674b671d0163cd8b06bf63bb17cc4a4a803b78b27c
+Status: Downloaded newer image for gitlab/gitlab-ce:latest
+docker.io/gitlab/gitlab-ce:latest
+dima@DESKTOP-A65H6VF:/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/2  $ docker pull gitlab/gitlab-runner:latest
+latest: Pulling from gitlab/gitlab-runner
+f2b4ef06ff01: Already exists
+0b61fcc42d4b: Pull complete
+6e65cbbadd76: Pull complete
+1e0a21056284: Pull complete
+8b91668bbeaa: Pull complete
+Digest: sha256:6d4cdfe23443fa5463bffa65cba9074a4517f68784756b69bcc362ca86f3d4c6
+Status: Downloaded newer image for gitlab/gitlab-runner:latest
+docker.io/gitlab/gitlab-runner:latest
+dima@DESKTOP-A65H6VF:/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/2  $ docker pull docker:cli
+cli: Pulling from library/docker
+7b229517ed22: Pull complete
+86d73475f3cd: Pull complete
+4f4fb700ef54: Pull complete
+7913c30c75cb: Pull complete
+87cca5349942: Pull complete
+90717f4349f4: Pull complete
+2715b93733ef: Pull complete
+1f9fb409770c: Pull complete
+53809f81375e: Pull complete
+53f5805c6408: Pull complete
+Digest: sha256:4d742ab934c2149b628bf26369ac3ec51cb91e2e28fe6722a0e86a6d6efc4bd5
+Status: Downloaded newer image for docker:cli
+docker.io/library/docker:cli
+dima@DESKTOP-A65H6VF:/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/2  $ docker pull alpine:3
+
+3: Pulling from library/alpine
+7b229517ed22: Already exists
+Digest: sha256:be2656061b536c1883c4034790e21d0a09c5aaaf51968b89368a3c0371ea2c9a
+Status: Downloaded newer image for alpine:3
+docker.io/library/alpine:3
+
+
+dima@DESKTOP-A65H6VF:/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/2  $ docker tag gitlab/gitlab-ce:latest fiit/gitlab:lab
+dima@DESKTOP-A65H6VF:/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/2  $ docker tag gitlab/gitlab-runner:latest fiit/runner:lab
+dima@DESKTOP-A65H6VF:/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/2  $ docker tag docker:cli fiit/docker-cli:lab
+dima@DESKTOP-A65H6VF:/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/2  $ docker image inspect fiit/gitlab:lab fiit/runner:lab fiit/docker-cli:lab \
+  --format '{{.RepoTags}} {{.Os}}/{{.Architecture}} {{.Id}}'
+[fiit/gitlab:lab gitlab/gitlab-ce:latest] linux/amd64 sha256:f88c118808549ed0d65d94342db6eb5b11b53ba8692e6a4b8c87ef1a48687e41
+[fiit/runner:lab gitlab/gitlab-runner:latest] linux/amd64 sha256:0f14d887fd920881d146fc7d3301c4da8408455be14e8560933314875e116746
+[fiit/docker-cli:lab docker:cli] linux/amd64 sha256:40cf18b07f7255f0f57566052a842b83959381e53a15e888b0dc621362a57c38
+
+
+dima@DESKTOP-A65H6VF:/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/2  $ docker network create gitlab-lab
+e8ab2909eebfd12849318346fd88aeaf6790ae14acef1fe29fe8c53e1bd46434
+dima@DESKTOP-A65H6VF:/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/2  $ docker volume create fiit-gitlab-config
+fiit-gitlab-config
+dima@DESKTOP-A65H6VF:/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/2  $ docker volume create fiit-gitlab-logs
+fiit-gitlab-logs
+dima@DESKTOP-A65H6VF:/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/2  $ docker volume create fiit-gitlab-data
+fiit-gitlab-data
+dima@DESKTOP-A65H6VF:/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/2  $ docker volume create fiit-runner-config
+
+fiit-runner-config
+dima@DESKTOP-A65H6VF:/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/2  $ docker network inspect gitlab-lab
+[
+    {
+        "Name": "gitlab-lab",
+        "Id": "e8ab2909eebfd12849318346fd88aeaf6790ae14acef1fe29fe8c53e1bd46434",
+        "Created": "2026-11-05T17:26:15.211364914Z",
+        "Scope": "local",
+        "Driver": "bridge",
+        "EnableIPv6": false,
+        "IPAM": {
+            "Driver": "default",
+            "Options": {},
+            "Config": [
+                {
+                    "Subnet": "172.22.0.0/16",
+                    "Gateway": "172.22.0.1"
+                }
+            ]
+        },
+        "Internal": false,
+        "Attachable": false,
+        "Ingress": false,
+        "ConfigFrom": {
+            "Network": ""
+        },
+        "ConfigOnly": false,
+        "Containers": {},
+        "Options": {},
+        "Labels": {}
+    }
+]
+dima@DESKTOP-A65H6VF:/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/2  $ docker volume inspect fiit-gitlab-config fiit-gitlab-logs fiit-gitlab-data fiit-runner-config
+
+[
+    {
+        "CreatedAt": "2026-11-05T17:26:20Z",
+        "Driver": "local",
+        "Labels": null,
+        "Mountpoint": "/var/lib/docker/volumes/fiit-gitlab-config/_data",
+        "Name": "fiit-gitlab-config",
+        "Options": null,
+        "Scope": "local"
+    },
+    {
+        "CreatedAt": "2026-11-05T17:26:26Z",
+        "Driver": "local",
+        "Labels": null,
+        "Mountpoint": "/var/lib/docker/volumes/fiit-gitlab-logs/_data",
+        "Name": "fiit-gitlab-logs",
+        "Options": null,
+        "Scope": "local"
+    },
+    {
+        "CreatedAt": "2026-11-05T17:26:28Z",
+        "Driver": "local",
+        "Labels": null,
+        "Mountpoint": "/var/lib/docker/volumes/fiit-gitlab-data/_data",
+        "Name": "fiit-gitlab-data",
+        "Options": null,
+        "Scope": "local"
+    },
+    {
+        "CreatedAt": "2026-11-05T17:26:32Z",
+        "Driver": "local",
+        "Labels": null,
+        "Mountpoint": "/var/lib/docker/volumes/fiit-runner-config/_data",
+        "Name": "fiit-runner-config",
+        "Options": null,
+        "Scope": "local"
+    }
+]
+dima@DESKTOP-A65H6VF:/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/2  $ docker run -d \
+  --name fiit-gitlab \
+  --hostname gitlab \
+  --network gitlab-lab \
+  --network-alias gitlab \
+  --restart unless-stopped \
+  --publish 127.0.0.1:8929:8929 \
+  --shm-size 256m \
+  --volume fiit-gitlab-config:/etc/gitlab \
+  --volume fiit-gitlab-logs:/var/log/gitlab \
+  --volume fiit-gitlab-data:/var/opt/gitlab \
+  --env GITLAB_OMNIBUS_CONFIG="external_url 'http://localhost:8929'; nginx['listen_port'] = 8929; letsencrypt['enable'] = false; puma['worker_processes'] = 0; sidekiq['concurrency'] = 10; prometheus_monitoring['enable'] = false; gitlab_kas['enable'] = false;" \
+  fiit/gitlab:lab
+0b7023466d9ef0b7ff887310e653a1a469b9a7838cfb26a440ace5bbc53446fb
+dima@DESKTOP-A65H6VF:/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/2  $ docker logs --tail 80 -f fiit-gitlab
+Current version: gitlab-ce=19.5.3-ce.0
+
+Configure GitLab for your system by editing /etc/gitlab/gitlab.rb file
+And restart this container to reload settings.
+To do it use docker exec:
+
+  docker exec -it gitlab editor /etc/gitlab/gitlab.rb
+  docker restart gitlab
+
+For a comprehensive list of configuration options please see the Omnibus GitLab readme
+https://gitlab.com/gitlab-org/omnibus-gitlab/blob/master/README.md
+
+If this container fails to start due to permission problems try to fix it by executing:
+
+  docker exec -it gitlab update-permissions
+  docker restart gitlab
+
+Cleaning stale PIDs & sockets
+cat: /var/opt/gitlab/gitlab-rails/VERSION: No such file or directory
+Installing gitlab.rb config...
+Generating ssh_host_rsa_key...
+Generating public/private rsa key pair.
+Your identification has been saved in /etc/gitlab/ssh_host_rsa_key
+Your public key has been saved in /etc/gitlab/ssh_host_rsa_key.pub
+The key fingerprint is:
+SHA256:rE1Kqwuiz5dRZP51qBhoAdOEMmrH0s96OqmG9FsQSWY root@gitlab
+The key's randomart image is:
++---[RSA 3072]----+
+|  oE.            |
+|o =.+ o          |
+|.ooo *     .     |
+|.o ++ +.  o .    |
+|. ooo..+So .     |
+| .  o+.*o        |
+|+ o o++ .        |
+|o+ *+o           |
+|oo++B.           |
++----[SHA256]-----+
+Generating ssh_host_ecdsa_key...
+Generating public/private ecdsa key pair.
+Your identification has been saved in /etc/gitlab/ssh_host_ecdsa_key
+Your public key has been saved in /etc/gitlab/ssh_host_ecdsa_key.pub
+The key fingerprint is:
+SHA256:siLLlllqKBPCB1nWuFtYvEP5nU2UwRzqtvzRGeeqQl8 root@gitlab
+The key's randomart image is:
++---[ECDSA 256]---+
+|    + .   +++    |
+|   + *    .=     |
+|  + = o ..+      |
+| o o + ..o .     |
+|. . o o So   . . |
+|o. o.  oo.. .E=  |
+|.oo=. . .o...o . |
+|+.*o .   .... .  |
+|.+o       .o..   |
++----[SHA256]-----+
+Generating ssh_host_ed25519_key...
+Generating public/private ed25519 key pair.
+Your identification has been saved in /etc/gitlab/ssh_host_ed25519_key
+Your public key has been saved in /etc/gitlab/ssh_host_ed25519_key.pub
+The key fingerprint is:
+SHA256:Ht49PRmH5txE8toAMgoZFHVtRTpHcEAtdyjyadPar3g root@gitlab
+The key's randomart image is:
++--[ED25519 256]--+
+|     .+o. .o+*=. |
+|       o .. =++ .|
+|      o   o++*o..|
+|       . . o=+.= |
+|        S  . += +|
+|       o o ..=.X |
+|        o . o B.o|
+|             oE..|
+|            .... |
++----[SHA256]-----+
+Preparing services...
+Preparing OpenSSH service...
+Starting services...
+Configuring GitLab...
+/opt/gitlab/embedded/bin/runsvdir-start: line 24: ulimit: pending signals: cannot modify limit: Operation not permitted
+/opt/gitlab/embedded/bin/runsvdir-start: line 37: /proc/sys/fs/file-max: Read-only file system
+[2026-11-05T17:39:35+00:00] INFO: Started Cinc Zero at chefzero://localhost:1 with repository at /opt/gitlab/embedded (One version per cookbook)
+Cinc Client, version 18.3.0
+Patents: https://www.chef.io/patents
+Infra Phase starting
+[2026-11-05T17:39:36+00:00] INFO: *** Cinc Client 18.3.0 ***
+[2026-11-05T17:39:36+00:00] INFO: Platform: x86_64-linux
+[2026-11-05T17:39:36+00:00] INFO: Cinc-client pid: 43
+[2026-11-05T17:39:36+00:00] INFO: Setting the run_list to ["recipe[gitlab-base]"] from CLI options
+[2026-11-05T17:39:36+00:00] INFO: Run List is [recipe[gitlab-base]]
+[2026-11-05T17:39:36+00:00] INFO: Run List expands to [gitlab-base]
+[2026-11-05T17:39:36+00:00] INFO: Starting Cinc Client Run for gitlab
+[2026-11-05T17:39:36+00:00] INFO: Running start handlers
+[2026-11-05T17:39:36+00:00] INFO: Start handlers complete.
+Resolving cookbooks for run list: ["gitlab-base"]
+[2026-11-05T17:39:37+00:00] INFO: Loading cookbooks [gitlab-base@0.1.0, package@0.1.0, gitlab@0.0.1, runit@5.1.7, logrotate@0.1.0, postgresql@0.1.0, redis@0.1.0, monitoring@0.1.0, registry@0.1.0, mattermost@0.1.0, consul@0.1.0, gitaly@0.1.0, praefect@0.1.0, gitlab-kas@0.1.0, gitlab-pages@0.1.0, letsencrypt@0.1.0, nginx@0.1.0, oak@0.1.0, acme@4.2.2, crond@0.1.0]
+Synchronizing cookbooks:
+[2026-11-05T17:39:37+00:00] INFO: Storing updated cookbooks/gitlab-base/recipes/show_config.rb in the cache.
+[2026-11-05T17:39:37+00:00] INFO: Storing updated cookbooks/package/resources/version_file.rb in the cache.
+[2026-11-05T17:39:37+00:00] INFO: Storing updated cookbooks/gitlab-base/recipes/config.rb in the cache.
+[2026-11-05T17:39:37+00:00] INFO: Storing updated cookbooks/gitlab-base/recipes/default.rb in the cache.
+[2026-11-05T17:39:37+00:00] INFO: Storing updated cookbooks/package/resources/storage_directory.rb in the cache.
+[2026-11-05T17:39:37+00:00] INFO: Storing updated cookbooks/package/resources/gitlab_sysctl.rb in the cache.
+[2026-11-05T17:39:37+00:00] INFO: Storing updated cookbooks/gitlab-base/metadata.rb in the cache.
+[2026-11-05T17:39:37+00:00] INFO: Storing updated cookbooks/package/libraries/account_helper.rb in the cache.
+  - gitlab-base (0.1.0)
+[2026-11-05T17:39:37+00:00] INFO: Storing updated cookbooks/package/libraries/config/gitlab.rb in the cache.
+[2026-11-05T17:39:37+00:00] INFO: Storing updated cookbooks/package/resources/account.rb in the cache.
+[2026-11-05T17:39:37+00:00] INFO: Storing updated cookbooks/package/libraries/config/roles/consul.rb in the cache.
+[2026-11-05T17:39:37+00:00] INFO: Storing updated cookbooks/package/libraries/certificate_helper.rb in the cache.
+[2026-11-05T17:39:37+00:00] INFO: Storing updated cookbooks/package/libraries/config/roles/geo_primary.rb in the cache.
+[2026-11-05T17:39:37+00:00] INFO: Storing updated cookbooks/package/libraries/config/roles/application.rb in the cache.
+[2026-11-05T17:39:37+00:00] INFO: Storing updated cookbooks/package/libraries/config/roles/backup.rb in the cache.
+[2026-11-05T17:39:37+00:00] INFO: Storing updated cookbooks/package/resources/templatesymlink.rb in the cache.
+[2026-11-05T17:39:37+00:00] INFO: Storing updated cookbooks/package/libraries/config/roles/patroni.rb in the cache.
+[2026-11-05T17:39:37+00:00] INFO: Storing updated cookbooks/package/resources/env_dir.rb in the cache.
+[2026-11-05T17:39:37+00:00] INFO: Storing updated cookbooks/package/libraries/config/roles/pgbouncer.rb in the cache.
+[2026-11-05T17:39:37+00:00] INFO: Storing updated cookbooks/package/libraries/config/roles/gitaly.rb in the cache.
+[2026-11-05T17:39:37+00:00] INFO: Storing updated cookbooks/package/libraries/config/roles/monitoring.rb in the cache.
+[2026-11-05T17:39:37+00:00] INFO: Storing updated cookbooks/package/libraries/config/roles/pages.rb in the cache.
+[2026-11-05T17:39:37+00:00] INFO: Storing updated cookbooks/package/libraries/config/roles/sidekiq.rb in the cache.
+[2026-11-05T17:39:37+00:00] INFO: Storing updated cookbooks/package/libraries/config/roles/redis_master.rb in the cache.
+[2026-11-05T17:39:37+00:00] INFO: Storing updated cookbooks/package/libraries/config/roles/redis_sentinel.rb in the cache.
+[2026-11-05T17:39:37+00:00] INFO: Storing updated cookbooks/package/libraries/config/roles/postgres.rb in the cache.
+[2026-11-05T17:39:37+00:00] INFO: Storing updated cookbooks/package/libraries/config/services.rb in the cache.
+[2026-11-05T17:39:37+00:00] INFO: Storing updated cookbooks/package/libraries/config/roles/default.rb in the cache.
+[2026-11-05T17:39:37+00:00] INFO: Storing updated cookbooks/package/libraries/formatters/gitlab.rb in the cache.
+[2026-11-05T17:39:37+00:00] INFO: Storing updated cookbooks/package/libraries/gitlab_cluster.rb in the cache.
+[2026-11-05T17:39:37+00:00] INFO: Storing updated cookbooks/package/libraries/helpers/base_helper.rb in the cache.
+[2026-11-05T17:39:37+00:00] INFO: Storing updated cookbooks/package/libraries/handlers/gitlab.rb in the cache.
+[2026-11-05T17:39:37+00:00] INFO: Storing updated cookbooks/package/libraries/config/roles/geo_secondary.rb in the cache.
+[2026-11-05T17:39:37+00:00] INFO: Storing updated cookbooks/package/libraries/deprecations.rb in the cache.
+[2026-11-05T17:39:37+00:00] INFO: Storing updated cookbooks/package/libraries/helpers/duration_helper.rb in the cache.
+[2026-11-05T17:39:37+00:00] INFO: Storing updated cookbooks/package/libraries/helpers/fips_helper.rb in the cache.
+[2026-11-05T17:39:37+00:00] INFO: Storing updated cookbooks/package/libraries/helpers/logging_helper.rb in the cache.
+[2026-11-05T17:39:37+00:00] INFO: Storing updated cookbooks/package/libraries/helper.rb in the cache.
+[2026-11-05T17:39:37+00:00] INFO: Storing updated cookbooks/package/libraries/config_mash.rb in the cache.
+[2026-11-05T17:39:37+00:00] INFO: Storing updated cookbooks/package/libraries/helpers/node_helper.rb in the cache.
+[2026-11-05T17:39:37+00:00] INFO: Storing updated cookbooks/package/libraries/helpers/redis_helper/gitlab_exporter.rb in the cache.
+[2026-11-05T17:39:37+00:00] INFO: Storing updated cookbooks/package/libraries/helpers/redis_helper/gitlab_kas.rb in the cache.
+[2026-11-05T17:39:38+00:00] INFO: Storing updated cookbooks/package/libraries/helpers/redis_helper/base.rb in the cache.
+[2026-11-05T17:39:38+00:00] INFO: Storing updated cookbooks/package/libraries/helpers/output_helper.rb in the cache.
+[2026-11-05T17:39:38+00:00] INFO: Storing updated cookbooks/package/libraries/helpers/redis_helper/gitlab_rails.rb in the cache.
+[2026-11-05T17:39:38+00:00] INFO: Storing updated cookbooks/package/libraries/helpers/redis_helper/gitlab_workhorse.rb in the cache.
+[2026-11-05T17:39:38+00:00] INFO: Storing updated cookbooks/package/libraries/helpers/redis_helper/server.rb in the cache.
+[2026-11-05T17:39:38+00:00] INFO: Storing updated cookbooks/package/libraries/helpers/services_helper.rb in the cache.
+[2026-11-05T17:39:38+00:00] INFO: Storing updated cookbooks/package/libraries/helpers/selinux_helper.rb in the cache.
+[2026-11-05T17:39:38+00:00] INFO: Storing updated cookbooks/package/libraries/helpers/selinux_distro_helper.rb in the cache.
+[2026-11-05T17:39:38+00:00] INFO: Storing updated cookbooks/package/libraries/helpers/secrets_helper.rb in the cache.
+[2026-11-05T17:39:38+00:00] INFO: Storing updated cookbooks/package/libraries/helpers/roles_helper.rb in the cache.
+[2026-11-05T17:39:38+00:00] INFO: Storing updated cookbooks/package/libraries/helpers/systemd_helper.rb in the cache.
+[2026-11-05T17:39:38+00:00] INFO: Storing updated cookbooks/package/libraries/helpers/redis_helper.rb in the cache.
+[2026-11-05T17:39:38+00:00] INFO: Storing updated cookbooks/package/libraries/omnibus_helper.rb in the cache.
+[2026-11-05T17:39:38+00:00] INFO: Storing updated cookbooks/package/libraries/logfiles_helper.rb in the cache.
+[2026-11-05T17:39:38+00:00] INFO: Storing updated cookbooks/package/libraries/helpers/redis_helper/redis_exporter.rb in the cache.
+[2026-11-05T17:39:38+00:00] INFO: Storing updated cookbooks/package/libraries/helpers/version_helper.rb in the cache.
+[2026-11-05T17:39:38+00:00] INFO: Storing updated cookbooks/package/libraries/redis_uri.rb in the cache.
+[2026-11-05T17:39:38+00:00] INFO: Storing updated cookbooks/package/libraries/settings_dsl.rb in the cache.
+[2026-11-05T17:39:38+00:00] INFO: Storing updated cookbooks/package/libraries/package.rb in the cache.
+[2026-11-05T17:39:38+00:00] INFO: Storing updated cookbooks/package/libraries/helpers/shell_out_helper.rb in the cache.
+^Ccontext canceled
+dima@DESKTOP-A65H6VF:/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/2  $ docker exec fiit-gitlab gitlab-ctl status
+run: gitaly: (pid 1104) 10s; run: log: (pid 1137) 9s
+run: logrotate: (pid 1032) 20s; run: log: (pid 1046) 19s
+run: redis: (pid 1061) 14s; run: log: (pid 1098) 13s
+run: sshd: (pid 38) 40s; run: log: (pid 37) 40s
+dima@DESKTOP-A65H6VF:/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/2  $ curl --fail --show-error http://localhost:8929/-/readiness
+
+curl: (52) Empty reply from server
+dima@DESKTOP-A65H6VF:/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/2  $ docker logs --tail 80 -f fiit-gitlab
+        * execute[enable pg_trgm extension (postgresql)] action run
+          [execute] CREATE EXTENSION
+[2026-11-05T17:40:27+00:00] INFO: execute[enable pg_trgm extension (postgresql)] ran successfully
+          - execute /opt/gitlab/bin/gitlab-psql -d gitlabhq_production -c "CREATE EXTENSION IF NOT EXISTS pg_trgm"
+
+
+    * postgresql_extension[btree_gist] action enable
+      * postgresql_query[enable btree_gist extension] action run
+        * execute[enable btree_gist extension (postgresql)] action run
+          [execute] CREATE EXTENSION
+[2026-11-05T17:40:28+00:00] INFO: execute[enable btree_gist extension (postgresql)] ran successfully
+          - execute /opt/gitlab/bin/gitlab-psql -d gitlabhq_production -c "CREATE EXTENSION IF NOT EXISTS btree_gist"
+
+
+    * postgresql_database_access[gitlabhq_production] action enforce (up to date)
+    * postgresql_database[gitlabhq_production] action create
+      * execute[create database gitlabhq_production] action run (skipped due to not_if)
+       (up to date)
+    * postgresql_extension[amcheck] action enable
+      * postgresql_query[enable amcheck extension] action run (skipped due to only_if)
+       (up to date)
+    * postgresql_extension[pg_trgm] action enable
+      * postgresql_query[enable pg_trgm extension] action run (skipped due to only_if)
+       (up to date)
+    * postgresql_extension[btree_gist] action enable
+      * postgresql_query[enable btree_gist extension] action run (skipped due to only_if)
+       (up to date)
+    * postgresql_database_access[gitlabhq_production] action enforce (up to date)
+
+Recipe: registry::database_objects
+  * registry_database_objects[default] action create
+    * postgresql_user[registry] action create
+      * execute[create registry postgresql user] action run
+        [execute] CREATE ROLE
+[2026-11-05T17:40:26+00:00] INFO: execute[create registry postgresql user] ran successfully
+        - execute /opt/gitlab/bin/gitlab-psql -d template1 -c "CREATE USER \"registry\""
+
+    * postgresql_database[registry] action create
+      * execute[create database registry] action run[2026-11-05T17:40:26+00:00] INFO: execute[create database registry] ran successfully
+
+        - execute /opt/gitlab/embedded/bin/createdb --port 5432 -h /var/opt/gitlab/postgresql -O registry registry
+
+    * postgresql_database_access[registry] action enforce (up to date)
+
+Recipe: postgresql::standalone
+  * ruby_block[warn registry auto_create is disabled] action run (skipped due to only_if)
+  * version_file[Create version file for PostgreSQL] action create
+    * file[/var/opt/gitlab/postgresql/VERSION] action create[2026-11-05T17:40:26+00:00] INFO: file[/var/opt/gitlab/postgresql/VERSION] created file /var/opt/gitlab/postgresql/VERSION
+
+      - create new file /var/opt/gitlab/postgresql/VERSION[2026-11-05T17:40:26+00:00] INFO: file[/var/opt/gitlab/postgresql/VERSION] updated file contents /var/opt/gitlab/postgresql/VERSION
+
+      - update content in file /var/opt/gitlab/postgresql/VERSION from none to 016ef0
+      --- /var/opt/gitlab/postgresql/VERSION    2026-11-05 17:40:26.845338911 +0000
+      +++ /var/opt/gitlab/postgresql/.chef-VERSION20261105-43-4fgeqr    2026-11-05 17:40:26.845338911 +0000
+      @@ -1 +1,2 @@
+      +postgres (PostgreSQL) 17.11
+
+  * ruby_block[warn pending postgresql restart] action run (skipped due to only_if)
+  * execute[reload postgresql] action nothing (skipped due to action :nothing)
+  * execute[start postgresql] action nothing (skipped due to action :nothing)
+Recipe: praefect::disable
+  * service[praefect] action nothing (skipped due to action :nothing)
+  * runit_service[praefect] action disable
+    * ruby_block[disable praefect] action run (skipped due to only_if)
+     (up to date)
+  * consul_service[praefect] action delete
+    * file[/var/opt/gitlab/consul/config.d/praefect-service.json] action delete (up to date)
+     (up to date)
+Recipe: gitlab-kas::disable
+  * service[gitlab-kas] action nothing (skipped due to action :nothing)
+  * runit_service[gitlab-kas] action disable
+    * ruby_block[disable gitlab-kas] action run (skipped due to only_if)
+     (up to date)
+  * nginx_configuration[kas] action delete
+    * file[/var/opt/gitlab/nginx/conf/service_conf/gitlab-kas.conf] action delete (up to date)
+     (up to date)
+Recipe: gitlab::database_migrations
+  * ruby_block[check remote PG version] action nothing (skipped due to action :nothing)
+  * rails_migration[gitlab-rails] action run[2026-11-05T17:40:26+00:00] WARN: gitlab-rails does not have a log_group or default logdir mode defined. Setting to 0700.
+
+^Ccontext canceled
+dima@DESKTOP-A65H6VF:/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/2  $ docker exec fiit-gitlab cat /etc/gitlab/initial_root_password
+
+# WARNING: This password is only valid if ALL of the following are true:
+#          • You set it manually via the GITLAB_ROOT_PASSWORD environment variable
+#            OR the gitlab_rails['initial_root_password'] setting in /etc/gitlab/gitlab.rb
+#          • You set it BEFORE the initial database setup (typically during first installation)
+#          • You have NOT changed the password since then (via web UI or command line)
+#
+#          If this password doesn't work, reset the admin password using:
+#          https://docs.gitlab.com/security/reset_user_password/#reset-the-root-password
+
+Password: yidX6xzbzBV/olyPMabIMRZTVcfxDctbHzzUCMTkR+g=
+
+# NOTE: This file is automatically deleted after 24 hours on the next reconfigure run.
+dima@DESKTOP-A65H6VF:/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/2  $ docker logs --tail 80 -f fiit-gitlab
+^C
+dima@DESKTOP-A65H6VF:/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/2  $ curl --fail --show-error http://localhost:8929/-/readiness
+curl: (52) Empty reply from server
+dima@DESKTOP-A65H6VF:/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/2  $ docker exec fiit-gitlab gitlab-ctl status
+run: gitaly: (pid 1104) 569s; run: log: (pid 1137) 568s
+run: logrotate: (pid 1032) 579s; run: log: (pid 1046) 578s
+run: postgresql: (pid 1192) 548s; run: log: (pid 1208) 547s
+run: puma: (pid 1692) 7s; run: log: (pid 1715) 4s
+run: redis: (pid 1061) 573s; run: log: (pid 1098) 572s
+run: sidekiq: (pid 1730) 1s; down: log: 1s, normally up, want up
+dima@DESKTOP-A65H6VF:/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/2  $ docker logs --tail 80 -f fiit-gitlab
+^C^[[A^C
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+PS C:\Users\HOMELite> docker rm -f llm-agent-f first mongodb
+request returned Internal Server Error for API route and version http://%2F%2F.%2Fpipe%2FdockerDesktopLinuxEngine/v1.47/containers/llm-agent-f?force=1, check if the server supports the requested API version
+request returned Internal Server Error for API route and version http://%2F%2F.%2Fpipe%2FdockerDesktopLinuxEngine/v1.47/containers/first?force=1, check if the server supports the requested API version
+request returned Internal Server Error for API route and version http://%2F%2F.%2Fpipe%2FdockerDesktopLinuxEngine/v1.47/containers/mongodb?force=1, check if the server supports the requested API version
+PS C:\Users\HOMELite> sudo service docker restart
+Sudo отключен на этом компьютере. Чтобы включить его, перейдите в раздел Developer Settings page в приложении "Параметры"
+PS C:\Users\HOMELite>  docker restart
+"docker restart" requires at least 1 argument.
+See 'docker restart --help'.
+
+Usage:  docker restart [OPTIONS] CONTAINER [CONTAINER...]
+
+Restart one or more containers
+PS C:\Users\HOMELite>
+PS C:\Users\HOMELite> curl --fail --show-error http://localhost:8929/-/readiness
+Invoke-WebRequest : Не удается найти позиционный параметр, принимающий аргумент "--show-error".
+строка:1 знак:1
++ curl --fail --show-error http://localhost:8929/-/readiness
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidArgument: (:) [Invoke-WebRequest], ParameterBindingException
+    + FullyQualifiedErrorId : PositionalParameterNotFound,Microsoft.PowerShell.Commands.InvokeWebRequestCommand
+
+PS C:\Users\HOMELite> wsl
+dima@DESKTOP-A65H6VF:/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/2  $ curl --fail --show-error http://localhost:8929/-/readiness
+
+curl: (22) The requested URL returned error: 404
+dima@DESKTOP-A65H6VF:/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/2  $
+dima@DESKTOP-A65H6VF:/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/2  $ curl --fail --show-error http://localhost:8929/-/readiness
+curl: (22) The requested URL returned error: 404
+dima@DESKTOP-A65H6VF:/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/2  $ docker run -d \
+  --name fiit-runner \
+  --network gitlab-lab \
+  --restart unless-stopped \
+  --volume fiit-runner-config:/etc/gitlab-runner \
+  --volume /var/run/docker.sock:/var/run/docker.sock \
+  fiit/runner:lab
+37da47cec10542de20d90c73f966a2d9062ebffb665d9432390b0543423503fd
+dima@DESKTOP-A65H6VF:/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/2  $ read -r -s -p 'Runner token (glrt-...): ' FIIT_RUNNER_TOKEN
+echo
+docker exec fiit-runner gitlab-runner register \
+  --non-interactive \
+  --url 'http://gitlab:8929' \
+  --clone-url 'http://gitlab:8929' \
+  --token "$FIIT_RUNNER_TOKEN" \
+  --executor docker \
+  --description student-local-docker \
+  --docker-image fiit/docker-cli:lab \
+  --docker-pull-policy if-not-present \
+  --docker-network-mode gitlab-lab \
+  --docker-volumes /var/run/docker.sock:/var/run/docker.sock \
+  --docker-volumes /cache
+unset FIIT_RUNNER_TOKEN
+docker restart fiit-runner
+Runner token (glrt-...):
+Runtime platform                                    arch=amd64 os=linux pid=21 revision=66ad5002 version=19.5.2
+Running in system-mode.
+
+Verifying runner... is not valid                    correlation_id=01M6QN03FRW3Z6DHF0VBP61D8M runner=e0b5ge3Tf runner_name=student-local-docker
+PANIC: Failed to verify the runner.
+fiit-runner
+dima@DESKTOP-A65H6VF:/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/2  $ read -r -s -p 'Runner token (glrt-...): ' FIIT_RUNNER_TOKEN
+echo
+docker exec fiit-runner gitlab-runner register \
+  --non-interactive \
+  --url 'http://gitlab:8929' \
+  --clone-url 'http://gitlab:8929' \
+  --token "glrt-..........................." \
+  --executor docker \
+  --description student-local-docker \
+  --docker-image fiit/docker-cli:lab \
+  --docker-pull-policy if-not-present \
+  --docker-network-mode gitlab-lab \
+  --docker-volumes /var/run/docker.sock:/var/run/docker.sock \
+  --docker-volumes /cache
+unset FIIT_RUNNER_TOKEN
+docker restart fiit-runner
+Runner token (glrt-...):
+Runtime platform                                    arch=amd64 os=linux pid=21 revision=66ad5002 version=19.5.2
+Running in system-mode.
+
+Verifying runner... is valid                        correlation_id=01M6QN2V06EHYPHNMQPAWBSTAV runner=e0b5ge3Tf runner_name=student-local-docker
+Runner registered successfully. Feel free to start it, but if it's running already the config should be automatically reloaded!
+
+Configuration (with the authentication token) was saved in "/etc/gitlab-runner/config.toml"
+fiit-runner
+dima@DESKTOP-A65H6VF:/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/2  $ docker exec fiit-runner gitlab-runner verify
+Runtime platform                                    arch=amd64 os=linux pid=22 revision=66ad5002 version=19.5.2
+Running in system-mode.
+
+Verifying runner... is valid                        correlation_id=01M6QNEC1NEQNVV140FK5A289C runner=e0b5ge3Tf runner_name=student-local-docker
+dima@DESKTOP-A65H6VF:/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/2  $ docker logs --tail 50 fiit-runner
+
+ERROR: Failed to load config stat /etc/gitlab-runner/config.toml: no such file or directory  builds=0 max_builds=1
+ERROR: Failed to load config stat /etc/gitlab-runner/config.toml: no such file or directory  builds=0 max_builds=1
+ERROR: Failed to load config stat /etc/gitlab-runner/config.toml: no such file or directory  builds=0 max_builds=1
+ERROR: Failed to load config stat /etc/gitlab-runner/config.toml: no such file or directory  builds=0 max_builds=1
+ERROR: Failed to load config stat /etc/gitlab-runner/config.toml: no such file or directory  builds=0 max_builds=1
+ERROR: Failed to load config stat /etc/gitlab-runner/config.toml: no such file or directory  builds=0 max_builds=1
+ERROR: Failed to load config stat /etc/gitlab-runner/config.toml: no such file or directory  builds=0 max_builds=1
+ERROR: Failed to load config stat /etc/gitlab-runner/config.toml: no such file or directory  builds=0 max_builds=1
+ERROR: Failed to load config stat /etc/gitlab-runner/config.toml: no such file or directory  builds=0 max_builds=1
+ERROR: Failed to load config stat /etc/gitlab-runner/config.toml: no such file or directory  builds=0 max_builds=1
+ERROR: Failed to load config stat /etc/gitlab-runner/config.toml: no such file or directory  builds=0 max_builds=1
+ERROR: Failed to load config stat /etc/gitlab-runner/config.toml: no such file or directory  builds=0 max_builds=1
+ERROR: Failed to load config stat /etc/gitlab-runner/config.toml: no such file or directory  builds=0 max_builds=1
+ERROR: Failed to load config stat /etc/gitlab-runner/config.toml: no such file or directory  builds=0 max_builds=1
+ERROR: Failed to load config stat /etc/gitlab-runner/config.toml: no such file or directory  builds=0 max_builds=1
+ERROR: Failed to load config stat /etc/gitlab-runner/config.toml: no such file or directory  builds=0 max_builds=1
+ERROR: Failed to load config stat /etc/gitlab-runner/config.toml: no such file or directory  builds=0 max_builds=1
+ERROR: Failed to load config stat /etc/gitlab-runner/config.toml: no such file or directory  builds=0 max_builds=1
+ERROR: Failed to load config stat /etc/gitlab-runner/config.toml: no such file or directory  builds=0 max_builds=1
+ERROR: Failed to load config stat /etc/gitlab-runner/config.toml: no such file or directory  builds=0 max_builds=1
+ERROR: Failed to load config stat /etc/gitlab-runner/config.toml: no such file or directory  builds=0 max_builds=1
+ERROR: Failed to load config stat /etc/gitlab-runner/config.toml: no such file or directory  builds=0 max_builds=1
+ERROR: Failed to load config stat /etc/gitlab-runner/config.toml: no such file or directory  builds=0 max_builds=1
+ERROR: Failed to load config stat /etc/gitlab-runner/config.toml: no such file or directory  builds=0 max_builds=1
+ERROR: Failed to load config stat /etc/gitlab-runner/config.toml: no such file or directory  builds=0 max_builds=1
+WARNING: [runWait] received stop signal             builds=0 max_builds=1 stop-signal=quit
+WARNING: Starting graceful shutdown, waiting for builds to finish  StopSignal=quit builds=0 max_builds=1
+All workers stopped.                                builds=0 max_builds=1
+Shutting down executor providers                    builds=0 max_builds=1 shutdown-timeout=30s
+Shutting down docker+machine executor provider      executor=docker+machine
+No shutdown drain config, skipping machine pool drain  executor=docker+machine
+All executor providers shut down.                   builds=0 max_builds=1
+Can exit now!                                       builds=0 max_builds=1
+Runtime platform                                    arch=amd64 os=linux pid=7 revision=66ad5002 version=19.5.2
+Starting multi-runner from /etc/gitlab-runner/config.toml...  builds=0 max_builds=0
+Running in system-mode.
+
+Usage logger disabled                               builds=0 max_builds=1
+Configuration loaded                                builds=0 max_builds=1
+WARNING: CONFIGURATION: Long polling issues detected.
+Issues found:
+  - Request bottleneck: 1 runners have request_concurrency=1, causing job delays during long polling
+This can cause job delays matching your GitLab instance's long polling timeout.
+Recommended solutions:
+  1. Increase 'request_concurrency' to 2-4 for 1 runners currently using request_concurrency=1
+This message will be printed each time the configuration is reloaded if the issues persist.
+See documentation: https://docs.gitlab.com/runner/configuration/advanced-configuration/#long-polling-issues  builds=0 max_builds=1
+Initializing executor providers                     builds=0 max_builds=1
+listen_address not defined, metrics & debug endpoints disabled  builds=0 max_builds=1
+[session_server].listen_address not defined, session endpoints disabled  builds=0 max_builds=1
+dima@DESKTOP-A65H6VF:/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/2  $ docker run --rm \
+  --network gitlab-lab \
+  --volume /var/run/docker.sock:/var/run/docker.sock \
+  fiit/docker-cli:lab sh -ec '
+    docker version
+    docker ps --format "table {{.Names}}\t{{.Status}}"
+    wget -qO- http://gitlab:8929/-/readiness
+  '
+Client:
+ Version:           29.9.3
+ API version:       1.47 (downgraded from 1.56)
+ Go version:        go1.26.10
+ Git commit:        5457199
+ Built:             Tue Nov  3 21:42:08 2026
+ OS/Arch:           linux/amd64
+ Context:           default
+
+Server: Docker Desktop 4.0.0 ()
+ Engine:
+  Version:          27.4.0
+  API version:      1.47 (minimum version 1.24)
+  Go version:       go1.22.10
+  Git commit:       92a8393
+  Built:            Sat Dec  7 10:38:57 2024
+  OS/Arch:          linux/amd64
+  Experimental:     false
+ containerd:
+  Version:          1.7.21
+  GitCommit:        472731909fa34bd7bc9c087e4c27943f9835f111
+ runc:
+  Version:          1.1.13
+  GitCommit:        v1.1.13-0-g58aa920
+ docker-init:
+  Version:          0.19.0
+  GitCommit:        de40ad0
+NAMES                       STATUS
+hopeful_moore               Up 1 second
+fiit-runner                 Up 12 minutes
+fiit-gitlab                 Up 11 hours (healthy)
+hosting-lab-control-plane   Up 11 hours
+hosting-lab-registry        Up 11 hours
+wget: server returned error: HTTP/1.1 404 Not Found
+dima@DESKTOP-A65H6VF:/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/2  $ docker network connect gitlab-lab hosting-lab-control-plane
+
+dima@DESKTOP-A65H6VF:/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/2  $ mkdir -p "$HOME/.config/fiit-gitlab"
+chmod 700 "$HOME/.config/fiit-gitlab"
+(umask 077; kind get kubeconfig --name hosting-lab --internal \
+  > "$HOME/.config/fiit-gitlab/kubeconfig")
+kubectl --kubeconfig "$HOME/.config/fiit-gitlab/kubeconfig" \
+  config view --minify -o jsonpath='{.clusters[0].cluster.server}'
+echo
+https://hosting-lab-control-plane:6443
+dima@DESKTOP-A65H6VF:/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/2  $ ls
+ AppData
+'Application Data'
+ Contacts
+ Cookies
+ Desktop
+ Documents
+ Downloads
+ Favorites
+ IdeaProjects
+ Links
+'Local Settings'
+ Music
+ NTUSER.DAT
+ NTUSER.DAT{8f4e4a19-fa84-11f0-b32b-00155d006e00}.TxR.0.regtrans-ms
+ NTUSER.DAT{8f4e4a19-fa84-11f0-b32b-00155d006e00}.TxR.1.regtrans-ms
+ NTUSER.DAT{8f4e4a19-fa84-11f0-b32b-00155d006e00}.TxR.2.regtrans-ms
+ NTUSER.DAT{8f4e4a19-fa84-11f0-b32b-00155d006e00}.TxR.blf
+ NTUSER.DAT{8f4e4a1a-fa84-11f0-b32b-00155d006e00}.TM.blf
+ NTUSER.DAT{8f4e4a1a-fa84-11f0-b32b-00155d006e00}.TMContainer00000000000000000001.regtrans-ms
+ NTUSER.DAT{8f4e4a1a-fa84-11f0-b32b-00155d006e00}.TMContainer00000000000000000002.regtrans-ms
+ NetHood
+ OneDrive
+ OpenVPN
+ Pictures
+ PrintHood
+ PycharmProjects
+ Recent
+ RiderProjects
+'Saved Games'
+ Searches
+ SendTo
+ Videos
+'WPS Cloud'
+'WPS Cloud Files'
+ ca.crt
+ git
+ java_error_in_rider_13196.log
+ java_error_in_webstorm_28620.log
+ laptop.crt
+ laptop.key
+ laptop.ovpn
+ ntuser.dat.LOG1
+ ntuser.dat.LOG2
+ ntuser.ini
+ postgresql-42.7.8.jar
+ scikit_learn_data
+ source
+ ta.key
+ vscode-remote-wsl
+ vsdbg
+ yandex-cloud
+'Мои документы'
+ Шаблоны
+dima@DESKTOP-A65H6VF:/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/2  $ FIIT_KUBE_VERSION=$(kubectl --context kind-hosting-lab version -o jsonpath='{.serverVersion.gitVersion}')
+docker pull "registry.k8s.io/kubectl:$FIIT_KUBE_VERSION"
+docker run --rm -i \
+  --network gitlab-lab \
+  "registry.k8s.io/kubectl:$FIIT_KUBE_VERSION" \
+  --kubeconfig /dev/stdin get nodes \
+  < "$HOME/.config/fiit-gitlab/kubeconfig"
+error: --output must be 'yaml' or 'json'
+invalid reference format
+docker: invalid reference format.
+See 'docker run --help'.
+dima@DESKTOP-A65H6VF:/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/2  $ cd D:\Dima\3University\DevOps\hw2\first
+-bash: cd: D:Dima3UniversityDevOpshw2first: No such file or directory
+dima@DESKTOP-A65H6VF:/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/2  $ # 1. Корректно получаем версию Kubernetes (убрали ошибку --output)
+FIIT_KUBE_VERSION=$(kubectl --context kind-hosting-lab version --client -o jsonpath='{.gitVersion}')
+# На всякий случай проверяем, что версия подставилась (должна быть что-то вроде v1.31.x)
+echo "Kubernetes version: $FIIT_KUBE_VERSION"
+
+# 2. Скачиваем правильный образ (если еще не скачан)
+docker pull "registry.k8s.io/kubectl:$FIIT_KUBE_VERSION"
+
+# 3. Запускаем проверку доступа к кластеру через Docker-сеть
+docker run --rm -i \
+  --network gitlab-lab \
+  "registry.k8s.io/kubectl:$FIIT_KUBE_VERSION" \
+  --kubeconfig /dev/stdin get nodes \
+  < "$HOME/.config/fiit-gitlab/kubeconfig"
+error: --output must be 'yaml' or 'json'
+Kubernetes version:
+invalid reference format
+docker: invalid reference format.
+See 'docker run --help'.
+dima@DESKTOP-A65H6VF:/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/2  $ cd /mnt/d/Dima/3University/DevOps/hw2/first
+dima@DESKTOP-A65H6VF:/mnt/d/Dima/3University/DevOps/hw2/first$ FIIT_KUBE_VERSION=$(kubectl --context kind-hosting-lab version --client -o jsonpath='{.gitVersion}')
+echo "Kubernetes version: $FIIT_KUBE_VERSION"
+
+docker pull "registry.k8s.io/kubectl:$FIIT_KUBE_VERSION"
+
+docker run --rm -i \
+  --network gitlab-lab \
+  "registry.k8s.io/kubectl:$FIIT_KUBE_VERSION" \
+  --kubeconfig /dev/stdin get nodes \
+  < "$HOME/.config/fiit-gitlab/kubeconfig"
+error: --output must be 'yaml' or 'json'
+Kubernetes version:
+invalid reference format
+docker: invalid reference format.
+See 'docker run --help'.
+dima@DESKTOP-A65H6VF:/mnt/d/Dima/3University/DevOps/hw2/first$ kubectl version --client
+Client Version: v1.37.1
+Kustomize Version: v5.8.1
+dima@DESKTOP-A65H6VF:/mnt/d/Dima/3University/DevOps/hw2/first$ FIIT_KUBE_VERSION="v1.37.1"
+
+docker pull "registry.k8s.io/kubectl:$FIIT_KUBE_VERSION"
+
+docker run --rm -i \
+  --network gitlab-lab \
+  "registry.k8s.io/kubectl:$FIIT_KUBE_VERSION" \
+  --kubeconfig /dev/stdin get nodes \
+  < "$HOME/.config/fiit-gitlab/kubeconfig"
+v1.37.1: Pulling from kubectl
+a5789fc40e82: Pull complete
+990a9c434e5e: Pull complete
+39dc083afc39: Pull complete
+bf7a4185f015: Pull complete
+2780920e5dbf: Pull complete
+7c12895b777b: Pull complete
+3214acf345c0: Pull complete
+52630fc75a18: Pull complete
+dd64bf2dd177: Pull complete
+b839dfae01f6: Pull complete
+dcaa5a89b0cc: Pull complete
+96ed2737ae31: Pull complete
+6e10fc9c4a45: Pull complete
+131808c81673: Pull complete
+Digest: sha256:b7cab618e281b1ee7484e7b706a96e2135fbb6e072c2a573a7dab4e87d7f2385
+Status: Downloaded newer image for registry.k8s.io/kubectl:v1.37.1
+registry.k8s.io/kubectl:v1.37.1
+NAME                        STATUS   ROLES           AGE   VERSION
+hosting-lab-control-plane   Ready    control-plane   13d   v1.32.2
+dima@DESKTOP-A65H6VF:/mnt/d/Dima/3University/DevOps/hw2/first$ docker ps --format 'table {{.Names}}\t{{.Status}}\t{{.Ports}}'
+NAMES                       STATUS                  PORTS
+fiit-runner                 Up 26 minutes
+fiit-gitlab                 Up 12 hours (healthy)   22/tcp, 80/tcp, 443/tcp, 127.0.0.1:8929->8929/tcp
+hosting-lab-control-plane   Up 12 hours             127.0.0.1:39535->6443/tcp
+hosting-lab-registry        Up 12 hours             127.0.0.1:5001->5000/tcp
+dima@DESKTOP-A65H6VF:/mnt/d/Dima/3University/DevOps/hw2/first$ curl http://localhost:8929/-/readiness
+{"error":"Not Found","status":404}
+dima@DESKTOP-A65H6VF:/mnt/d/Dima/3University/DevOps/hw2/first$ curl http://localhost:8929/-/health
+Not Found
+dima@DESKTOP-A65H6VF:/mnt/d/Dima/3University/DevOps/hw2/first$ curl http://localhost:8929/-/liveness
+{"error":"Not Found","status":404}
+dima@DESKTOP-A65H6VF:/mnt/d/Dima/3University/DevOps/hw2/first$ kubectl --context kind-hosting-lab get nodes -o wide
+NAME                        STATUS   ROLES           AGE   VERSION   INTERNAL-IP   EXTERNAL-IP   OS-IMAGE                         KERNEL-VERSION                       CONTAINER-RUNTIME
+hosting-lab-control-plane   Ready    control-plane   13d   v1.32.2   172.21.0.2    <none>        Debian GNU/Linux 12 (bookworm)   5.15.167.4-microsoft-standard-WSL2   containerd://2.0.2
+dima@DESKTOP-A65H6VF:/mnt/d/Dima/3University/DevOps/hw2/first$

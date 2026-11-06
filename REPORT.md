@@ -7,329 +7,318 @@
 - ОС: Windows 11 с WSL2
 - Архитектура: `amd64`
 
-## Опыты
+## REPORT
+# 1
+### PS C:\Users\HOMELite> docker version
+Client:
+ Version:           27.4.0
+ API version:       1.47
+ Go version:        go1.22.10
+ Git commit:        bde2b89
+ Built:             Sat Dec  7 10:40:21 2024
+ OS/Arch:           windows/amd64
+ Context:           desktop-linux
 
-### 1
-было
-```bash
-22ea47d0a91f1369525a65610ae391c867c2b4a4c0ddab35897a$ kubectl -n homework-2 get pods -l app=feedback-quiz -o custom-columns='NAME:.metadata.name,UID:.me
-tadata.uid,READY:.status.containerStatuses[0].ready,RESTARTS:.status.contain
-erStatuses[0].restartCount'
-NAME                            UID                                    READY   RESTARTS
-feedback-quiz-df9ccd99d-48w7r   1f40e9b8-4e62-4d38-a4b8-247528f91b26   true    0
-feedback-quiz-df9ccd99d-4q6w7   87b086e1-3b11-4698-b110-acabb4ebffbe   true    0
-feedback-quiz-df9ccd99d-b2cws   4cc5ba1c-0f53-4745-b705-dba210401302   true    0
-dima@DESKTOP-A65H6VF:/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/f6f12dcae8ba22ea47d0a91f1369525a65610ae391c867c2b4a4c0ddab35897a$
-```
-стало
-```bash
-NAME                            UID                                    READY   RESTARTS
-feedback-quiz-df9ccd99d-48w7r   1f40e9b8-4e62-4d38-a4b8-247528f91b26   true    2
-feedback-quiz-df9ccd99d-4q6w7   87b086e1-3b11-4698-b110-acabb4ebffbe   true    0
-feedback-quiz-df9ccd99d-b2cws   4cc5ba1c-0f53-4745-b705-dba210401302   true    0
-```
-client логи не менялмсь
-
-```bash
-2026-10-30T07:12:03.8109824+00:00 GET http://feedback-quiz.homework-2.svc.cluster.local/ -> 200 pod={"message":"Feedback quiz configuration was changed","author":"Dima","tokenConfigured":true,"podName":"feedback-quiz-df9ccd99d-48w7r"}
-2026-10-30T07:12:05.8083749+00:00 GET http://feedback-quiz.homework-2.svc.cluster.local/ -> 200 pod={"message":"Feedback quiz configuration was changed","author":"Dima","tokenConfigured":true,"podName":"feedback-quiz-df9ccd99d-b2cws"}
-```
-
-
-запросы:
-
-```bash
-dima@DESKTOP-A65H6VF:/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/f6f12dcae8ba22ea47d0a91f1369525a65610ae391c867c2b4a4c0ddab35897a$ date -u
-Fri Oct 30 07:06:10 UTC 2026
-dima@DESKTOP-A65H6VF:/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/f6f12dcae8ba22ea47d0a91f1369525a65610ae391c867c2b4a4c0ddab35897a$ curl -i http://localhost:8082/
-HTTP/1.1 200 OK
-Content-Type: application/json; charset=utf-8
-Date: Fri, 30 Oct 2026 07:06:11 GMT
-Server: Kestrel
-Transfer-Encoding: chunked
-
-{"message":"Feedback quiz configuration was changed","author":"Dima","tokenConfigured":true,"podName":"feedback-quiz-df9ccd99d-48w7r"}dima@DESKTOP-A65H6VF:/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/f6f12dcacurl -i http://localhost:8082/livec867c2b4a4c0ddab35897a$ curl -i http://localhost:8082/live
-HTTP/1.1 200 OK
-Content-Length: 0
-Date: Fri, 30 Oct 2026 07:06:20 GMT
-Server: Kestrel
-
-dima@DESKTOP-A65H6VF:/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/f6f12dcae8ba22ea47d0a91f1369525a65610ae391c867c2b4a4c0ddab35897a$ curl -i http://localhost:8082/ready
-HTTP/1.1 200 OK
-Content-Length: 0
-Date: Fri, 30 Oct 2026 07:06:27 GMT
-Server: Kestrel
-
-dima@DESKTOP-A65H6VF:/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/f6f12dcae8ba22ea47d0a91f1369525a65610ae391c867c2b4a4c0ddab35897a$ curl -i http://localhost:8082/you-are-death
-HTTP/1.1 200 OK
-Content-Length: 0
-Date: Fri, 30 Oct 2026 07:06:33 GMT
-Server: Kestrel
-
-dima@DESKTOP-A65H6VF:/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/f6f12dcae8ba22ea47d0a91f1369525a65610ae391c867c2b4a4c0ddab35897a$ curl -i http://localhost:8082/live
-
-HTTP/1.1 200 OK
-Content-Length: 0
-Date: Fri, 30 Oct 2026 07:07:06 GMT
-Server: Kestrel
-
-dima@DESKTOP-A65H6VF:/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/f6f12dcae8ba22ea47d0a91f1369525a65610ae391c867c2b4a4c0ddab35897a$ curl -i http://localhost:8082/you-are-death
-HTTP/1.1 200 OK
-Content-Length: 0
-Date: Fri, 30 Oct 2026 07:07:16 GMT
-Server: Kestrel
-
-dima@DESKTOP-A65H6VF:/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/f6f12dcae8ba22ea47d0a91f1369525a65610ae391c867c2b4a4c0ddab35897a$ curl -i http://localhost:8082/live
-
-HTTP/1.1 503 Service Unavailable
-Content-Type: application/problem+json; charset=utf-8
-Date: Fri, 30 Oct 2026 07:07:21 GMT
-Server: Kestrel
-Transfer-Encoding: chunked
-
-{"type":"https://tools.ietf.org/html/rfc9110#section-15.6.4","title":"Service Unavailable","status":503,"traceId":"00-42cbe00a67a8400a36d3fa26f3669ada-019b13b921ed187d-00"}dima@DESKTOP-A65H6VF:/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/f6f12dcae8ba22ea47d0a91f1369525a65610ae391c867c2b4a4c0ddab35897a$ kubectl -n homework-2 get pods -l app=feedback-quiz -w
-NAME                            READY   STATUS    RESTARTS      AGE
-feedback-quiz-df9ccd99d-48w7r   1/1     Running   2 (57s ago)   12h
-feedback-quiz-df9ccd99d-4q6w7   1/1     Running   0             12h
-feedback-quiz-df9ccd99d-b2cws   1/1     Running   0             12h
-```
-
-Перезапуск после запроса death происходил может секунд 20.   uuid сохранился ведь kuber не удалил под, а перезапустил контейнер внутри него. Так как увидел что livenessProbe упала.   Client получает запросы без ошибок т.к. Service отправил их на другие реплики
-
-### 2
-
-перед экспериментом так:
-```bash
-IP:               10.244.0.8
-IPs:
-  IP:           10.244.0.8
-  Every 2.0s: kubectl -n homewor...  DESKTOP-A65H6VF: Fri Oct 30 12:41:38 2026
-
-NAME                            READY   STATUS    RESTARTS        AGE
-feedback-quiz-df9ccd99d-48w7r   1/1     Running   3 (7m43s ago)   13h
-feedback-quiz-df9ccd99d-4q6w7   1/1     Running   0               13h
-```
-
-```bash
-dima@DESKTOP-A65H6VF:/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/f6f12dcae8ba22ea47d0a91f1369525a65610ae391c867c2b4a4c0ddab35897a$ date -u
-Fri Oct 30 07:48:26 UTC 2026
-dima@DESKTOP-A65H6VF:/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/f6f12dcae8ba22ea47d0a91f1369525a65610ae391c867c2b4a4c0ddab35897a$ curl -i http://localhost:8082/not-ready
-HTTP/1.1 200 OK
-Content-Length: 0
-Date: Fri, 30 Oct 2026 07:48:35 GMT
-Server: Kestrel
-
-dima@DESKTOP-A65H6VF:/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/f6f12dcae8ba22ea47d0a91f1369525a65610ae391c867c2b4a4c0ddab35897a$ curl -i http://localhost:8082/ready
-HTTP/1.1 503 Service Unavailable
-Content-Type: application/problem+json; charset=utf-8
-Date: Fri, 30 Oct 2026 07:48:41 GMT
-Server: Kestrel
-Transfer-Encoding: chunked
-736909073c02491-00"}dima@DESKTOP-A65H6VF:/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/f6f12dcae8ba22ea47d0a91f1369525a65610ae391c867curl -i http://localhost:8082/live/localhost:8082/live
-HTTP/1.1 200 OK
-Content-Length: 0
-Date: Fri, 30 Oct 2026 07:48:54 GMT
-Server: Kestrel
-
-dima@DESKTOP-A65H6VF:/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/f6f12dcae8ba22ea47d0a91f1369525a65610ae391c867c2b4a4c0ddab35897a$ curl -i http://localhost:8082/
-
-HTTP/1.1 200 OK
-Content-Type: application/json; charset=utf-8
-Date: Fri, 30 Oct 2026 07:49:07 GMT
-Server: Kestrel
-Transfer-Encoding: chunked
-
-{"message":"Feedback quiz configuration was changed","author":"Dima","tokenConfigured":true,"podName":"feedback-quiz-df9ccd99d-48w7r"}dima@DESKTOP-A65H6VF:/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/f6f12dcae8ba22ea47d0a91f13695curl -i http://localhost:8082/ready$ curl -i http://localhost:8082/ready
-HTTP/1.1 503 Service Unavailable
-Content-Type: application/problem+json; charset=utf-8
-Date: Fri, 30 Oct 2026 07:51:18 GMT
-Server: Kestrel
-Transfer-Encoding: chunked
-
-{"type":"https://tools.ietf.org/html/rfc9110#section-15.6.4","title":"Service Unavailable","status":503,"traceId":"00-ebd74c661dd839852879591a789b734d-2f3038edd889e53c-00"}dima@DESKTOP-A65H6VF:/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/f6f12dcae8ba22ea47d0a91f1369525a65610ae391c867c2b4a4c0ddab35897a$ curl -i http://localhost:8082/ready-again
-HTTP/1.1 200 OK
-Content-Length: 0
-Date: Fri, 30 Oct 2026 07:52:41 GMT
-Server: Kestrel
-
-dima@DESKTOP-A65H6VF:/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/f6f12dcae8ba22ea47d0a91f1369525a65610ae391c867c2b4a4c0ddab35897a$ curl -i http://localhost:8082/ready
-HTTP/1.1 200 OK
-Content-Length: 0
-Date: Fri, 30 Oct 2026 07:52:48 GMT
-Server: Kestrel
-```
-
-после:
-```bash
-NAME                            READY   STATUS    RESTARTS      AGE   IP
-       NODE                        NOMINATED NODE   READINESS GATES
-feedback-quiz-df9ccd99d-48w7r   1/1     Running   3 (32m ago)   13h   10.244
-.0.8   hosting-lab-control-plane   <none>           <none>
-```
-Readiness проба не отвечает за перезапуск. - только за то можно ли направить трафик пользователей на него или нет.
-клиент продолжил получать хорошие сообщения - сервис перенаправил на другие реплики. 
-после curl -i http://localhost:8082/ready-again
-под опять стал ready 1/1
-### 3
-
-начало:
-```bash
-Every 2.0s: kubectl -n homewor...  DESKTOP-A65H6VF: Fri Oct 30 13:09:32 2026
-
-NAME                            READY   STATUS    RESTARTS      AGE   IP
-       NODE                        NOMINATED NODE   READINESS GATES
-feedback-quiz-df9ccd99d-48w7r   1/1     Running   3 (35m ago)   13h   10.244
-.0.8   hosting-lab-control-plane   <none>           <none>
-feedback-quiz-df9ccd99d-4q6w7   1/1     Running   0             13h   10.244
-.0.9   hosting-lab-control-plane   <none>           <none>
-feedback-quiz-df9ccd99d-b2cws   1/1     Running   0             13h   10.244
-.0.7   hosting-lab-control-plane   <none>           <none>
-
-kubectl -n homework-2 get replicasets -l app=feedback-quiz
-NAME                      DESIRED   CURRENT   READY   AGE
-feedback-quiz-df9ccd99d   3         3         3       13h
+Server: Docker Desktop 4.37.1 (178610)
+ Engine:
+  Version:          27.4.0
+  API version:      1.47 (minimum version 1.24)
+  Go version:       go1.22.10
+  Git commit:       92a8393
+  Built:            Sat Dec  7 10:38:57 2024
+  OS/Arch:          linux/amd64
+  Experimental:     false
+ containerd:
+  Version:          1.7.21
+  GitCommit:        472731909fa34bd7bc9c087e4c27943f9835f111
+ runc:
+  Version:          1.1.13
+  GitCommit:        v1.1.13-0-g58aa920
+ docker-init:
+  Version:          0.19.0
+  GitCommit:        de40ad0
 
 
-NAME                            UID                                    IMAGE                                  READY   RESTARTS
-feedback-quiz-df9ccd99d-48w7r   1f40e9b8-4e62-4d38-a4b8-247528f91b26   localhost:5001/dima-feedback-quiz:v3   True    3
-feedback-quiz-df9ccd99d-4q6w7   87b086e1-3b11-4698-b110-acabb4ebffbe   localhost:5001/dima-feedback-quiz:v3   True    0
-feedback-quiz-df9ccd99d-b2cws   4cc5ba1c-0f53-4745-b705-dba210401302   localhost:5001/dima-feedback-quiz:v3   True    0
-```
+   ### docker info
+Client:
+ Version:    27.4.0
+ Context:    default
+ Debug Mode: false
+ Plugins:
+  ai: Ask Gordon - Docker Agent (Docker Inc.)
+    Version:  v0.5.1
+    Path:     /usr/local/lib/docker/cli-plugins/docker-ai
+  buildx: Docker Buildx (Docker Inc.)
+    Version:  v0.19.2-desktop.1
+    Path:     /usr/local/lib/docker/cli-plugins/docker-buildx
+  compose: Docker Compose (Docker Inc.)
+    Version:  v2.31.0-desktop.2
+    Path:     /usr/local/lib/docker/cli-plugins/docker-compose
+  debug: Get a shell into any image or container (Docker Inc.)
+    Version:  0.0.37
+    Path:     /usr/local/lib/docker/cli-plugins/docker-debug
+  desktop: Docker Desktop commands (Beta) (Docker Inc.)
+    Version:  v0.1.0
+    Path:     /usr/local/lib/docker/cli-plugins/docker-desktop
+  dev: Docker Dev Environments (Docker Inc.)
+    Version:  v0.1.2
+    Path:     /usr/local/lib/docker/cli-plugins/docker-dev
+  extension: Manages Docker extensions (Docker Inc.)
+    Version:  v0.2.27
+    Path:     /usr/local/lib/docker/cli-plugins/docker-extension
+  feedback: Provide feedback, right in your terminal! (Docker Inc.)
+    Version:  v1.0.5
+    Path:     /usr/local/lib/docker/cli-plugins/docker-feedback
+  init: Creates Docker-related starter files for your project (Docker Inc.)
+    Version:  v1.4.0
+    Path:     /usr/local/lib/docker/cli-plugins/docker-init
+  sbom: View the packaged-based Software Bill Of Materials (SBOM) for an image (Anchore Inc.)
+    Version:  0.6.0
+    Path:     /usr/local/lib/docker/cli-plugins/docker-sbom
+  scout: Docker Scout (Docker Inc.)
+    Version:  v1.15.1
+    Path:     /usr/local/lib/docker/cli-plugins/docker-scout
+
+Server:
+ Containers: 26
+  Running: 15
+  Paused: 0
+  Stopped: 11
+ Images: 77
+ Server Version: 27.4.0
+ Storage Driver: overlay2
+  Backing Filesystem: extfs
+  Supports d_type: true
+  Using metacopy: false
+  Native Overlay Diff: true
+  userxattr: false
+ Logging Driver: json-file
+ Cgroup Driver: cgroupfs
+ Cgroup Version: 1
+ Plugins:
+  Volume: local
+  Network: bridge host ipvlan macvlan null overlay
+  Log: awslogs fluentd gcplogs gelf journald json-file local splunk syslog
+ CDI spec directories:
+  /etc/cdi
+  /var/run/cdi
+ Swarm: inactive
+ Runtimes: io.containerd.runc.v2 nvidia runc
+ Default Runtime: runc
+ Init Binary: docker-init
+ containerd version: 472731909fa34bd7bc9c087e4c27943f9835f111
+ runc version: v1.1.13-0-g58aa920
+ init version: de40ad0
+ Security Options:
+  seccomp
+   Profile: unconfined
+ Kernel Version: 5.15.167.4-microsoft-standard-WSL2
+ Operating System: Docker Desktop
+ OSType: linux
+ Architecture: x86_64
+ CPUs: 8
+ Total Memory: 3.828GiB
+ Name: docker-desktop
+ ID: f4367e72-f458-43ff-9b26-6b08717770c8
+ Docker Root Dir: /var/lib/docker
+ Debug Mode: false
+ HTTP Proxy: http.docker.internal:3128
+ HTTPS Proxy: http.docker.internal:3128
+ No Proxy: hubproxy.docker.internal
+ Labels:
+  com.docker.desktop.address=unix:///var/run/docker-cli.sock
+ Experimental: false
+ Insecure Registries:
+  hubproxy.docker.internal:5555
+  127.0.0.0/8
+ Live Restore Enabled: false
+
+WARNING: No blkio throttle.read_bps_device support
+WARNING: No blkio throttle.write_bps_device support
+WARNING: No blkio throttle.read_iops_device support
+WARNING: No blkio throttle.write_iops_device support
+WARNING: daemon is not using the default seccomp profile
+
+### kind version
+kind v0.27.0 go1.23.6 linux/amd64
+
+###  kubectl version --client
+Client Version: v1.37.1
+Kustomize Version: v5.8.1
+
+###  git --version
+git version 2.43.0
 
 
-```bash
-dima@DESKTOP-A65H6VF:/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/f6f12dcae8ba22ea47d0a91f1369525a65610ae391c867c2b4a4c0ddab35897a$ kind load docker-image localhost:5001/dima-feedback-quiz:v4 --name hosting-lab
-Image: "localhost:5001/dima-feedback-quiz:v4" with ID "sha256:e6f7fd7373739e796f789b8f41b9e8e557ef0c0964e8e0cf68f99aad9e621da0" not yet present on node "hosting-lab-control-plane", loading...
-dima@DESKTOP-A65H6VF:/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/f6f12dcae8ba22ea47d0a91f1369525a65610ae391c867c2b4a4c0ddab35897a$ date -u
-Fri Oct 30 08:19:37 UTC 2026
-dima@DESKTOP-A65H6VF:/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/f6f12dcae8ba22ea47d0a91f1369525a65610ae391c867c2b4a4c0ddab35897a$ kubectl apply -f deployment.yaml
-error: the path "deployment.yaml" does not exist
+### kind get clusters
+### docker ps -a --format 'table {{.Names}}\t{{.Status}}\t{{.Ports}}'
+hosting-lab
+NAMES                                                                                      STATUS                          PORTS
+tasktracker-grafana-1                                                                      Exited (255) 42 minutes ago     0.0.0.0:3000->3000/tcp
+tasktracker-worker-1                                                                       Exited (255) 42 minutes ago     8080/tcp
+tasktracker-notifications-1                                                                Exited (255) 42 minutes ago     0.0.0.0:8081->8080/tcp
+tasktracker-api-1                                                                          Exited (255) 42 minutes ago     0.0.0.0:8080->8080/tcp
+tasktracker-prometheus-1                                                                   Exited (255) 42 minutes ago     0.0.0.0:9090->9090/tcp
+tasktracker-postgres-1                                                                     Exited (0) About a minute ago
+tasktracker-rabbitmq-1                                                                     Exited (0) About a minute ago
+tasktracker-jaeger-1                                                                       Exited (255) 42 minutes ago     4318/tcp, 5778-5779/tcp, 9411/tcp, 13132-13133/tcp, 14250/tcp, 0.0.0.0:4317->4317/tcp, 0.0.0.0:16686->16686/tcp, 14268/tcp
+cc_tasktracker_ba4784-claude-code-1                                                        Exited (255) 42 minutes ago     0.0.0.0:1455->1455/tcp, 0.0.0.0:55320->55320/tcp
+cc_f74_c485c2-claude-code-1                                                                Exited (255) 2 days ago         0.0.0.0:1455->1455/tcp, 0.0.0.0:55320->55320/tcp
+cc_homelite_72cf63-claude-code-1                                                           Created                      
+cc_2c96dca07abf9b80a135d8312ae773778d000875d847164870004528acb9a964_b4dac1-claude-code-1   Exited (137) 5 days ago      
+hosting-lab-control-plane                                                                  Up 41 minutes                   127.0.0.1:39535->6443/tcp
+cc_e80d625ccbe1835525cc5edd41c8b3ad0fd87bcd60251906c709528a37a026fa_61fa24-claude-code-1   Exited (137) 13 days ago     
+mongodb                                                                                    Exited (137) 2 weeks ago     
+hosting-lab-registry                                                                       Up 41 minutes                   127.0.0.1:5001->5000/tcp
+first-app-1                                                                                Exited (0) 3 weeks ago       
+first-nginx-1                                                                              Exited (0) 3 weeks ago       
+first-db-1                                                                                 Exited (0) 3 weeks ago       
+first-cache-1                                                                              Exited (0) 3 weeks ago       
+llm-agent-f-langfuse-web-1                                                                 Up 4 seconds                    0.0.0.0:3000->3000/tcp
+llm-agent-f-langfuse-worker-1                                                              Up 41 minutes                   127.0.0.1:3030->3030/tcp
+llm-agent-f-clickhouse-1                                                                   Up 41 minutes (healthy)         127.0.0.1:8123->8123/tcp, 127.0.0.1:9000->9000/tcp, 9009/tcp
+llm-agent-f-redis-1                                                                        Up 41 minutes (healthy)         127.0.0.1:6379->6379/tcp
+llm-agent-f-minio-1                                                                        Up 41 minutes (healthy)         0.0.0.0:9090->9000/tcp, 127.0.0.1:9091->9001/tcp
+llm-agent-f-postgres-1                                                                     Exited (128) 2 days ago      
 
-обновляю:
+### kubectl --context kind-hosting-lab get nodes -o wide
+NAME                        STATUS   ROLES           AGE   VERSION   INTERNAL-IP   EXTERNAL-IP   OS-IMAGE                         KERNEL-VERSION                       CONTAINER-RUNTIME
+hosting-lab-control-plane   Ready    control-plane   13d   v1.32.2   172.21.0.2    <none>        Debian GNU/Linux 12 (bookworm)   5.15.167.4-microsoft-standard-WSL2   containerd://2.0.2
 
-dima@DESKTOP-A65H6VF:/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/f6f12dcae8ba22ea47d0a91f1369525a65610ae391c867c2b4a4c0ddab35897a$ kubectl -n homework-2 set image deployment/feedback-quiz \
-  feedback-quiz=localhost:5001/dima-feedback-quiz:v4
-deployment.apps/feedback-quiz image updated
+# 2
 
-
-dima@DESKTOP-A65H6VF:/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/f6f12dcae8ba22ea47d0a91f1369525a65610ae391c867c2b4a4c0ddab35897a$ kubectl -n homework-2 get pods -l app=feedback-quiz -o wide
-NAME                             READY   STATUS    RESTARTS   AGE    IP            NODE                        NOMINATED NODE   READINESS GATES
-feedback-quiz-5569b89fd5-74s4t   1/1     Running   0          119s   10.244.0.13   hosting-lab-control-plane   <none>           <none>
-feedback-quiz-5569b89fd5-cqfl8   1/1     Running   0          78s    10.244.0.15   hosting-lab-control-plane   <none>           <none>
-feedback-quiz-5569b89fd5-hpjlk   1/1     Running   0          100s   10.244.0.14   hosting-lab-control-plane   <none>           <none>
-dima@DESKTOP-A65H6VF:/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/f6f12dcae8ba22ea47d0a91f1369525a65610ae391c867c2b4a4c0ddab35897a$ kubectl -n homework-2 get replicasets -l app=feedback-quiz
-NAME                       DESIRED   CURRENT   READY   AGE
-feedback-quiz-5569b89fd5   3         3         3       2m7s
-feedback-quiz-df9ccd99d    0         0         0       14h
-dima@DESKTOP-A65H6VF:/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/f6f12dcae8ba22ea47d0a91f1369525a65610ae391c867c2b4a4c0ddab35897a$ kubectl -n homework-2 rollout status deployment/feedback-quiz --timeout=180s
-deployment "feedback-quiz" successfully rolled out
+# 59b04643$ docker ps -a --format 'table {{.Names}}\t{{.Status}}\t{{.Ports}}'
+``` bash
+dima@DESKTOP-A65H6VF:/mnt/d/Dima/3University/DevOps/hw2/first$ docker ps --format 'table {{.Names}}\t{{.Status}}\t{{.Ports}}'
+NAMES                       STATUS                  PORTS
+fiit-runner                 Up 26 minutes
+fiit-gitlab                 Up 12 hours (healthy)   22/tcp, 80/tcp, 443/tcp, 127.0.0.1:8929->8929/tcp
+hosting-lab-control-plane   Up 12 hours             127.0.0.1:39535->6443/tcp
+hosting-lab-registry        Up 12 hours             127.0.0.1:5001->5000/tcp
 ```
 
+# 3
+скачивал docker pull gitlab/gitlab-ce:latest
+
+
+
 ```bash
-dima@DESKTOP-A65H6VF:/mnt/d/Dima/3University/DevOps/hw2/first$ kubectl -n homework-2 get deployment feedback-quiz -w
-NAME            READY   UP-TO-DATE   AVAILABLE   AGE
-feedback-quiz   3/3     3            3           14h
-feedback-quiz   3/3     3            3           14h
-feedback-quiz   3/3     3            3           14h
-feedback-quiz   3/3     0            3           14h
-feedback-quiz   3/3     1            3           14h
-feedback-quiz   4/3     1            3           14h
-feedback-quiz   4/3     1            4           14h
-feedback-quiz   3/3     2            3           14h
-feedback-quiz   4/3     2            3           14h
-feedback-quiz   4/3     2            4           14h
-feedback-quiz   3/3     2            3           14h
-feedback-quiz   3/3     3            3           14h
-feedback-quiz   4/3     3            3           14h
-feedback-quiz   4/3     3            4           14h
-feedback-quiz   3/3     3            3           14h
+dima@DESKTOP-A65H6VF:  docker tag gitlab/gitlab-ce:latest fiit/gitlab:lab
+dima@DESKTOP-A65H6VF:  docker tag gitlab/gitlab-runner:latest fiit/runner:lab
+dima@DESKTOP-A65H6VF:  docker tag docker:cli fiit/docker-cli:lab
+dima@DESKTOP-A65H6VF:  docker image inspect fiit/gitlab:lab fiit/runner:lab fiit/docker-cli:lab \
+  --format '{{.RepoTags}} {{.Os}}/{{.Architecture}} {{.Id}}'
+[fiit/gitlab:lab gitlab/gitlab-ce:latest] linux/amd64 sha256:f88c118808549ed0d65d94342db6eb5b11b53ba8692e6a4b8c87ef1a48687e41
+[fiit/runner:lab gitlab/gitlab-runner:latest] linux/amd64 sha256:0f14d887fd920881d146fc7d3301c4da8408455be14e8560933314875e116746
+[fiit/docker-cli:lab docker:cli] linux/amd64 sha256:40cf18b07f7255f0f57566052a842b83959381e53a15e888b0dc621362a57c38
+```
+# 4
+``` bash
+dima@DESKTOP-A65H6VF:/mnt/d/Dima/3University/DevOps/hw2/first$ curl http://localhost:8929/-/readiness
+{"error":"Not Found","status":404}
+dima@DESKTOP-A65H6VF:/mnt/d/Dima/3University/DevOps/hw2/first$ curl http://localhost:8929/-/health
+Not Found
+dima@DESKTOP-A65H6VF:/mnt/d/Dima/3University/DevOps/hw2/first$ curl http://localhost:8929/-/liveness
+{"error":"Not Found","status":404}
 ```
 
-стали другие имена:
+Но в браузере грузится
+
+![alt text](image-3.png)
+# 5
+![alt text](image-2.png)
+
+docker exec fiit-runner gitlab-runner verify
+Runtime platform                                    arch=amd64 os=linux pid=22 revision=66ad5002 version=19.5.2
+Running in system-mode.
+
+Verifying runner... is valid                        correlation_id=01M6QNEC1NEQNVV140FK5A289C runner=e0b5ge3Tf runner_name=student-local-docker
+
+
+# 6
+
 ```bash
-feedback-quiz-5569b89fd5-74s4t   1/1     Running   0          119s   10.244.0.13   hosting-lab-control-plane   <none>           <none>
-feedback-quiz-5569b89fd5-cqfl8   1/1     Running   0          78s    10.244.0.15   hosting-lab-control-plane   <none>           <none>
-feedback-quiz-5569b89fd5-hpjlk   1/1     Running   0          100s   10.244.0.14   hosting-lab-control-plane   <none>           <none>
+docker run --rm \
+  --network gitlab-lab \
+  --volume /var/run/docker.sock:/var/run/docker.sock \
+  fiit/docker-cli:lab sh -ec '
+    docker version
+    docker ps --format "table {{.Names}}\t{{.Status}}"
+    wget -qO- http://gitlab:8929/-/readiness
+  '
+Client:
+ Version:           29.9.3
+ API version:       1.47 (downgraded from 1.56)
+ Go version:        go1.26.10
+ Git commit:        5457199
+ Built:             Tue Nov  3 21:42:08 2026
+ OS/Arch:           linux/amd64
+ Context:           default
+
+Server: Docker Desktop 4.0.0 ()
+ Engine:
+  Version:          27.4.0
+  API version:      1.47 (minimum version 1.24)
+  Go version:       go1.22.10
+  Git commit:       92a8393
+  Built:            Sat Dec  7 10:38:57 2024
+  OS/Arch:          linux/amd64
+  Experimental:     false
+ containerd:
+  Version:          1.7.21
+  GitCommit:        472731909fa34bd7bc9c087e4c27943f9835f111
+ runc:
+  Version:          1.1.13
+  GitCommit:        v1.1.13-0-g58aa920
+ docker-init:
+  Version:          0.19.0
+  GitCommit:        de40ad0
+NAMES                       STATUS
+hopeful_moore               Up 1 second
+fiit-runner                 Up 12 minutes
+fiit-gitlab                 Up 11 hours (healthy)
+hosting-lab-control-plane   Up 11 hours
+hosting-lab-registry        Up 11 hours
+wget: server returned error: HTTP/1.1 404 Not Found
 ```
-старый ReplicaSet имел имя feedback-quiz-df9ccd99d
-Стал другим:
-NAME                       DESIRED   CURRENT   READY   AGE
-feedback-quiz-5569b89fd5   3         3         3       2m7s
-feedback-quiz-df9ccd99d    0         0         0       14h
 
-
-В процессе обновления создавались 4-тые дополнительные реплики, потом удалялись (я с 3-мя работаю)
-
-создавались 3 новые поды с новой v4 версией которые заменяли старые. maxSurge: 1 - разрешила создать максимум одну доп. Поэтому у клиента все работало.
-
-
-
-### Ingres
-
-повторил эксперимент:
+# 7
 ```bash
+ FIIT_KUBE_VERSION="v1.37.1"
 
-kubectl -n homework-2 port-forward pod/feedback-quiz-5569b89fd5-74s4t 8082:8080
+docker pull "registry.k8s.io/kubectl:$FIIT_KUBE_VERSION"
 
-curl -i http://localhost:8082/ready-againost:8082/ready-again
+docker run --rm -i \
+  --network gitlab-lab \
+  "registry.k8s.io/kubectl:$FIIT_KUBE_VERSION" \
+  --kubeconfig /dev/stdin get nodes \
+  < "$HOME/.config/fiit-gitlab/kubeconfig"
+v1.37.1: Pulling from kubectl
+a5789fc40e82: Pull complete
+990a9c434e5e: Pull complete
+39dc083afc39: Pull complete
+bf7a4185f015: Pull complete
+2780920e5dbf: Pull complete
+7c12895b777b: Pull complete
+3214acf345c0: Pull complete
+52630fc75a18: Pull complete
+dd64bf2dd177: Pull complete
+b839dfae01f6: Pull complete
+dcaa5a89b0cc: Pull complete
+96ed2737ae31: Pull complete
+6e10fc9c4a45: Pull complete
+131808c81673: Pull complete
+Digest: sha256:b7cab618e281b1ee7484e7b706a96e2135fbb6e072c2a573a7dab4e87d7f2385
+Status: Downloaded newer image for registry.k8s.io/kubectl:v1.37.1
+registry.k8s.io/kubectl:v1.37.1
+NAME                        STATUS   ROLES           AGE   VERSION
+hosting-lab-control-plane   Ready    control-plane   13d   v1.32.2
 
-curl -i http://localhost:8082/ready
-
-curl -i http://localhost:8082/not-ready
-
-curl -i http://localhost:8082/live
 
 
-dima@DESKTOP-A65H6VF:/mnt/d/Dima/3University/DevOps/hw2/first$ kubectl -n homework-2 get pods -l app=feedback-quiz -w
-NAME                             READY   STATUS    RESTARTS   AGE
-feedback-quiz-5569b89fd5-74s4t   0/1     Running   0          67m
-feedback-quiz-5569b89fd5-cqfl8   1/1     Running   0          66m
-feedback-quiz-5569b89fd5-hpjlk   1/1     Running   0          66m
-feedback-quiz-5569b89fd5-74s4t   1/1     Running   0          67m
+
+dima@DESKTOP-A65H6VF:/mnt/d/Dima/3University/DevOps/hw2/first$  kubectl --context kind-hosting-lab get nodes -o wide
+NAME                        STATUS   ROLES           AGE   VERSION   INTERNAL-IP   EXTERNAL-IP   OS-IMAGE                         KERNEL-VERSION                       CONTAINER-RUNTIME
+hosting-lab-control-plane   Ready    control-plane   13d   v1.32.2   172.21.0.2    <none>        Debian GNU/Linux 12 (bookworm)   5.15.167.4-microsoft-standard-WSL2   containerd://2.0.2
 ```
-Для варианта с ingres обращение идёт через traefik.ingress-system.svc.cluster.local. А в прямом варианте - по днс имени сервис приложения feedback-quiz.homework-2.svc.cluster.local
-
-localhost внутри client Pod - означает саму поду а не траефик или мой компьютер
-
-Для связи сервисов внутри кластера достаточно ClusterIP Service. Ингрес будет иметь смысл для внешнего http(s) доступа, маршрутизации по доменам и путям
-
-![alt text](image.png)
-вернуть клиент на обычный сервис:
-kubectl apply -f k8s/client-configmap.yaml
-kubectl -n homework-2 rollout restart deployment/feedback-client
-
-
-## Команды для докера
-теги были v3 и v4
-
-
-docker build -t localhost:5001/dima-feedback-quiz:v4 ./_Src/GFeed.WebApiApp
-
- docker push localhost:5001/dima-feedback-quiz:v4
-
-
-  kind load docker-image localhost:5001/dima-feedback-quiz:v4 --name hosting-lab
-
-
-Команды для удаления:
-kubectl delete -f k8s/client-deployment.yaml
-
-kubectl delete -f k8s/client-configmap-ingress.yaml
-kubectl delete -f k8s/client-configmap.yaml
-
-kubectl delete -f k8s/service.yaml
-
-
-kubectl delete -f k8s/deployment.yaml
-
-kubectl delete -f k8s/configmap.yaml
-
-kubectl delete -f k8s/secret.yaml
-
-kubectl delete -f k8s/namespace.yaml
-
-kubectl get all -n homework-2
-
-kubectl delete -f k8s/ingress.yaml
-
 

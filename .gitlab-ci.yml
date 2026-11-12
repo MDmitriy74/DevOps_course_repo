@@ -1,0 +1,89 @@
+stages:
+  - build
+  - test
+  - publish image
+  - deploy
+
+variables:
+  APP_VERSION: "${CI_PIPELINE_ID}"
+  APP_IMAGE: "localhost:5001/dima-feedback-quiz:${CI_PIPELINE_ID}"
+  KUBE_NAMESPACE: "homework-2"
+
+default:
+  tags:
+    - local-docker
+
+build-job:
+  stage: build
+  script:
+    - docker build -t "$APP_IMAGE" "$CI_PROJECT_DIR/_Src/GFeed.WebApiApp"
+    - echo "APP_IMAGE=$APP_IMAGE" > build.env
+    - echo "Application image built: $APP_IMAGE"
+  artifacts:
+    reports:
+      dotenv: build.env
+    paths:
+      - build.env
+
+test-job:
+  stage: test
+  image: mcr.microsoft.com/dotnet/sdk:10.0
+  script:
+    - dotnet test "$CI_PROJECT_DIR/_Src/Tests/Tests.csproj" --logger "junit;LogFilePath=$CI_PROJECT_DIR/TestResults/tests.xml"
+  artifacts:
+    when: always
+    paths:
+      - TestResults/tests.xml
+    reports:
+      junit: TestResults/tests.xml
+
+publish-image:
+  stage: publish image
+  needs:
+    - job: build-job
+      artifacts: true
+  script:
+    - docker push "$APP_IMAGE"
+
+deploy-staging:
+  stage: deploy
+  image:
+    name: dtzar/helm-kubectl:4.3.0
+    entrypoint: [""]
+  needs:
+    - job: publish-image
+      artifacts: true
+    - job: build-job
+      artifacts: true
+  resource_group: deploy-image-staging
+  environment:
+    name: staging
+  rules:
+    - if: '$CI_COMMIT_BRANCH && $CI_COMMIT_BRANCH != $CI_DEFAULT_BRANCH'
+  script:
+    - kubectl apply -f "$CI_PROJECT_DIR/k8s/namespace.yaml"
+    - kubectl apply -n "$KUBE_NAMESPACE" -f "$CI_PROJECT_DIR/k8s/configmap.yaml" -f "$CI_PROJECT_DIR/k8s/secret.yaml" -f "$CI_PROJECT_DIR/k8s/deployment.yaml" -f "$CI_PROJECT_DIR/k8s/service.yaml"
+    - kubectl -n "$KUBE_NAMESPACE" set image deployment/feedback-quiz feedback-quiz="$APP_IMAGE"
+    - kubectl -n "$KUBE_NAMESPACE" rollout status deployment/feedback-quiz --timeout=3m
+
+deploy-production:
+  stage: deploy
+  image:
+    name: dtzar/helm-kubectl:4.3.0
+    entrypoint: [""]
+  needs:
+    - job: publish-image
+      artifacts: true
+    - job: build-job
+      artifacts: true
+  resource_group: deploy-image-production
+  environment:
+    name: production
+  rules:
+    - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
+      when: manual
+  script:
+    - kubectl apply -f "$CI_PROJECT_DIR/k8s/namespace.yaml"
+    - kubectl apply -n "$KUBE_NAMESPACE" -f "$CI_PROJECT_DIR/k8s/configmap.yaml" -f "$CI_PROJECT_DIR/k8s/secret.yaml" -f "$CI_PROJECT_DIR/k8s/deployment.yaml" -f "$CI_PROJECT_DIR/k8s/service.yaml"
+    - kubectl -n "$KUBE_NAMESPACE" set image deployment/feedback-quiz feedback-quiz="$APP_IMAGE"
+    - kubectl -n "$KUBE_NAMESPACE" rollout status deployment/feedback-quiz --timeout=3m

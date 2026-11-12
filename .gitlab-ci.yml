@@ -18,7 +18,7 @@ build-job:
   script:
     - docker build -t "$APP_IMAGE" "$CI_PROJECT_DIR/_Src/GFeed.WebApiApp"
     - echo "APP_IMAGE=$APP_IMAGE" > build.env
-    - echo "Application image built: $APP_IMAGE"
+    - 'echo "Application image built: $APP_IMAGE"'
   artifacts:
     reports:
       dotenv: build.env

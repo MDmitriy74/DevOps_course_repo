@@ -1,0 +1,12 @@
+image: localhost:5001/dima-feedback-quiz:latest
+replicaCount: 3
+
+service:
+  port: 80
+  targetPort: 8080
+
+app:
+  message: Feedback quiz configuration was changed
+  author: Dima
+  environment: Production
+  token: training-token-homework-2

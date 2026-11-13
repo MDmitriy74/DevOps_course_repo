@@ -25,6 +25,14 @@ build-job:
     paths:
       - build.env
 
+image-check:
+  stage: build
+  needs:
+    - job: build-job
+      artifacts: true
+  script:
+    - docker run --rm -v /var/run/docker.sock:/var/run/docker.sock wagoodman/dive:latest --ci --highestUserWastedPercent 0.15 --lowestEfficiency 0.8 "$APP_IMAGE"
+
 test-job:
   stage: test
   image: mcr.microsoft.com/dotnet/sdk:10.0

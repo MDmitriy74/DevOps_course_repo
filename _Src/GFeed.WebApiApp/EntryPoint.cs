@@ -1,10 +1,21 @@
 using GFeed.WebApiApp.Implementations.HostConfigurations;
+using OpenTelemetry.Metrics;
+using OpenTelemetry.Resources;
+using Serilog;
 
+DotNetEnv.Env.TraversePath().Load();
 var builder = WebApplication.CreateBuilder(args);
 
 builder.AddLogConfiguration();
 builder.AddServicesConfiguration();
-DotNetEnv.Env.TraversePath().Load();
+
+builder.Services.AddOpenTelemetry()
+    .ConfigureResource(resource => resource.AddService(
+        serviceName: builder.Configuration["OTEL_SERVICE_NAME"] ?? "feedback-quiz"))
+    .WithMetrics(metrics => metrics
+        .AddAspNetCoreInstrumentation()
+        .AddRuntimeInstrumentation()
+        .AddOtlpExporter());
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
@@ -14,6 +25,7 @@ builder.Services.AddSwaggerGen();
 //builder.Services.AddCorsConfiguration();
 
 var app = builder.Build();
+app.UseSerilogRequestLogging();
 
 if (app.Environment.IsDevelopment())
 {

@@ -13,7 +13,17 @@ public static class SerilogConfigurationExtensions
             .MinimumLevel.Override("Microsoft.Hosting.Lifetime", LogEventLevel.Information)
             .MinimumLevel.Override("System", LogEventLevel.Warning)
             .Enrich.FromLogContext()
-            .WriteTo.Console(outputTemplate: "[{Timestamp:HH:mm:ss} {Level:u3}] {Message:lj}{NewLine}{Exception}")
+            .WriteTo.Console(new Serilog.Formatting.Compact.CompactJsonFormatter())
+            .WriteTo.OpenTelemetry(options =>
+            {
+                options.Endpoint = builder.Configuration["OTEL_EXPORTER_OTLP_ENDPOINT"]
+                    ?? "http://localhost:4317";
+                options.Protocol = Serilog.Sinks.OpenTelemetry.OtlpProtocol.Grpc;
+                options.ResourceAttributes = new Dictionary<string, object>
+                {
+                    ["service.name"] = builder.Configuration["OTEL_SERVICE_NAME"] ?? "feedback-quiz"
+                };
+            })
             .CreateLogger();
 
         builder.Host.UseSerilog();

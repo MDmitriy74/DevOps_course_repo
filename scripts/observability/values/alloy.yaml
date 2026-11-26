@@ -1,0 +1,160 @@
+fullnameOverride: alloy
+crds:
+  create: false
+controller:
+  type: deployment
+  replicas: 1
+  volumes:
+    extra:
+      - name: data
+        emptyDir: {}
+alloy:
+  enableReporting: false
+  storagePath: /var/lib/alloy
+  mounts:
+    extra:
+      - name: data
+        mountPath: /var/lib/alloy
+  resources:
+    requests: {cpu: 100m, memory: 256Mi}
+    limits: {cpu: '1', memory: 768Mi}
+  extraPorts:
+    - name: otlp-grpc
+      port: 4317
+      targetPort: 4317
+      protocol: TCP
+    - name: otlp-http
+      port: 4318
+      targetPort: 4318
+      protocol: TCP
+  configMap:
+    content: |
+      logging {
+        level = "info"
+        format = "json"
+      }
+
+      otelcol.receiver.otlp "apps" {
+        grpc { endpoint = "0.0.0.0:4317" }
+        http { endpoint = "0.0.0.0:4318" }
+        output {
+          metrics = [otelcol.processor.memory_limiter.apps.input]
+          logs = [otelcol.processor.memory_limiter.apps.input]
+          traces = [otelcol.processor.memory_limiter.apps.input]
+        }
+      }
+      otelcol.processor.memory_limiter "apps" {
+        check_interval = "1s"
+        limit = "192MiB"
+        spike_limit = "48MiB"
+        output {
+          metrics = [otelcol.processor.batch.apps.input]
+          logs = [otelcol.processor.batch.apps.input]
+          traces = [otelcol.processor.batch.apps.input]
+        }
+      }
+      otelcol.processor.batch "apps" {
+        timeout = "5s"
+        send_batch_size = 512
+        output {
+          metrics = [otelcol.exporter.otlphttp.prometheus.input]
+          logs = [otelcol.exporter.otlphttp.loki.input]
+          traces = [otelcol.exporter.otlp.tempo.input]
+        }
+      }
+      otelcol.exporter.otlphttp "prometheus" {
+        client { endpoint = "http://prometheus:80/api/v1/otlp" }
+      }
+      otelcol.exporter.otlphttp "loki" {
+        client { endpoint = "http://loki:3100/otlp" }
+      }
+      otelcol.exporter.otlp "tempo" {
+        client {
+          endpoint = "tempo:4317"
+          tls { insecure = true }
+        }
+      }
+
+      prometheus.remote_write "local" {
+        endpoint { url = "http://prometheus:80/api/v1/write" }
+      }
+      prometheus.scrape "services" {
+        targets = [
+          {"__address__" = "grafana:80", "job" = "grafana", "service_name" = "grafana"},
+          {"__address__" = "prometheus:80", "job" = "prometheus"},
+          {"__address__" = "loki:3100", "job" = "loki"},
+          {"__address__" = "tempo:3200", "job" = "tempo"},
+          {"__address__" = "127.0.0.1:12345", "job" = "alloy"},
+          {"__address__" = "kube-state-metrics:8080", "job" = "kube-state-metrics"},
+        ]
+        scrape_interval = "30s"
+        forward_to = [prometheus.remote_write.local.receiver]
+      }
+
+      // Scrape every node once from this single Alloy instance.
+      discovery.kubernetes "nodes" { role = "node" }
+      discovery.relabel "nodes" {
+        targets = discovery.kubernetes.nodes.targets
+        rule {
+          source_labels = ["__meta_kubernetes_node_name"]
+          target_label = "node"
+        }
+      }
+      prometheus.scrape "kubelet" {
+        targets = discovery.relabel.nodes.output
+        scheme = "https"
+        metrics_path = "/metrics"
+        job_name = "kubelet"
+        authorization {
+          type = "Bearer"
+          credentials_file = "/var/run/secrets/kubernetes.io/serviceaccount/token"
+        }
+        tls_config {
+          // Kubelet serving certificates vary between kind and managed clusters.
+          insecure_skip_verify = true
+        }
+        scrape_interval = "30s"
+        forward_to = [prometheus.remote_write.local.receiver]
+      }
+      prometheus.scrape "cadvisor" {
+        targets = discovery.relabel.nodes.output
+        scheme = "https"
+        metrics_path = "/metrics/cadvisor"
+        job_name = "cadvisor"
+        authorization {
+          type = "Bearer"
+          credentials_file = "/var/run/secrets/kubernetes.io/serviceaccount/token"
+        }
+        tls_config { insecure_skip_verify = true }
+        scrape_interval = "30s"
+        forward_to = [prometheus.remote_write.local.receiver]
+      }
+
+      // Kubernetes API log streaming works on all nodes without hostPath mounts.
+      discovery.kubernetes "pods" { role = "pod" }
+      discovery.relabel "logs" {
+        targets = discovery.kubernetes.pods.targets
+        rule {
+          source_labels = ["__meta_kubernetes_namespace"]
+          target_label = "namespace"
+        }
+        rule {
+          source_labels = ["__meta_kubernetes_pod_name"]
+          target_label = "pod"
+        }
+        rule {
+          source_labels = ["__meta_kubernetes_pod_container_name"]
+          target_label = "container"
+        }
+        rule {
+          source_labels = ["__meta_kubernetes_pod_container_name"]
+          target_label = "service_name"
+        }
+      }
+      loki.source.kubernetes "pods" {
+        targets = discovery.relabel.logs.output
+        forward_to = [loki.write.local.receiver]
+      }
+      loki.write "local" {
+        endpoint { url = "http://loki:3100/loki/api/v1/push" }
+      }

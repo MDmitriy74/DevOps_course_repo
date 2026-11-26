@@ -10,3 +10,4 @@ app:
   author: Dima
   environment: Production
   token: training-token-homework-2
+  otelEndpoint: http://alloy.monitoring.svc.cluster.local:4317

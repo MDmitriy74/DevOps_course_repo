@@ -1,0 +1,6 @@
+# Source from bash. Chart versions pin their application images as well.
+GRAFANA_CHART_VERSION=14.3.1
+PROMETHEUS_CHART_VERSION=29.40.3
+LOKI_CHART_VERSION=20.2.2
+TEMPO_CHART_VERSION=3.2.1
+ALLOY_CHART_VERSION=1.15.0

@@ -1,0 +1,167 @@
+fullnameOverride: grafana
+replicas: 1
+adminUser: admin
+# Local course credentials; UI is accessed through port-forward.
+adminPassword: observability-course
+persistence:
+  enabled: false
+initChownData:
+  enabled: false
+resources:
+  requests: {cpu: 100m, memory: 192Mi}
+  limits: {cpu: '1', memory: 512Mi}
+grafana.ini:
+  analytics:
+    reporting_enabled: false
+    check_for_updates: false
+    check_for_plugin_updates: false
+  log:
+    mode: console
+    level: info
+  log.console:
+    format: json
+  server:
+    router_logging: true
+  database:
+    instrument_queries: true
+    wal: true
+    query_retries: 5
+  tracing.opentelemetry:
+    custom_attributes: service.name:grafana
+    sampler_type: const
+    sampler_param: 1
+  tracing.opentelemetry.otlp:
+    address: alloy:4317
+    propagation: w3c
+    insecure: true
+datasources:
+  datasources.yaml:
+    apiVersion: 1
+    datasources:
+      - name: Prometheus
+        uid: prometheus
+        type: prometheus
+        access: proxy
+        url: http://prometheus:80
+        isDefault: true
+        jsonData:
+          httpMethod: POST
+          timeInterval: 30s
+          exemplarTraceIdDestinations:
+            - name: trace_id
+              datasourceUid: tempo
+      - name: Loki
+        uid: loki
+        type: loki
+        access: proxy
+        url: http://loki:3100
+        jsonData:
+          derivedFields:
+            - name: TraceID
+              matcherRegex: '"traceID"\s*:\s*"([0-9a-fA-F]{32})"'
+              datasourceUid: tempo
+              url: '$${__value.raw}'
+      - name: Tempo
+        uid: tempo
+        type: tempo
+        access: proxy
+        url: http://tempo:3200
+        jsonData:
+          tracesToLogsV2:
+            datasourceUid: loki
+            spanStartTimeShift: '-1m'
+            spanEndTimeShift: '1m'
+            tags: [{key: service.name, value: service_name}]
+            filterByTraceID: false
+            filterBySpanID: false
+      - name: Broken Prometheus (practice)
+        uid: broken-prometheus
+        type: prometheus
+        access: proxy
+        url: http://prometheus:80
+        editable: true
+dashboardProviders:
+  dashboardproviders.yaml:
+    apiVersion: 1
+    providers:
+      - name: course
+        orgId: 1
+        folder: Course
+        type: file
+        disableDeletion: true
+        allowUiUpdates: true
+        options:
+          path: /var/lib/grafana/dashboards/course
+# JSON is passed via --set-file by scripts/stack.sh.
+dashboards: {}
+alerting:
+  rules.yaml:
+    apiVersion: 1
+    groups:
+      - orgId: 1
+        name: course
+        folder: Course
+        interval: 30s
+        rules:
+          - uid: grafana-scrape-down
+            title: Grafana metrics scrape unavailable
+            condition: C
+            for: 1m
+            noDataState: NoData
+            execErrState: Error
+            annotations:
+              summary: Alloy cannot scrape Grafana metrics
+            labels:
+              course: observability
+            data:
+              - refId: A
+                datasourceUid: prometheus
+                relativeTimeRange: {from: 300, to: 0}
+                model:
+                  refId: A
+                  expr: 'up{job="grafana"}'
+                  instant: true
+                  intervalMs: 1000
+                  maxDataPoints: 43200
+              - refId: C
+                datasourceUid: __expr__
+                relativeTimeRange: {from: 0, to: 0}
+                model:
+                  refId: C
+                  type: threshold
+                  expression: A
+                  conditions:
+                    - evaluator: {type: lt, params: [1]}
+                      operator: {type: and}
+                      reducer: {type: last, params: []}
+                      type: query
+  # A valid receiver with an always-active mute interval: no delivery attempts.
+  contactpoints.yaml:
+    apiVersion: 1
+    contactPoints:
+      - orgId: 1
+        name: UI only
+        receivers:
+          - uid: ui-only
+            type: webhook
+            settings:
+              url: http://127.0.0.1:9/unused
+  mutetimes.yaml:
+    apiVersion: 1
+    muteTimes:
+      - orgId: 1
+        name: always
+        time_intervals:
+          - times:
+              - start_time: '00:00'
+                end_time: '24:00'
+  policies.yaml:
+    apiVersion: 1
+    policies:
+      - orgId: 1
+        receiver: UI only
+        group_by: [grafana_folder, alertname]
+        routes:
+          - receiver: UI only
+            object_matchers: []
+            mute_time_intervals: [always]
